@@ -1,0 +1,250 @@
+{
+  "entry": {
+    "device": [
+      {
+        "type": "IPC127E",
+        "key": "BDYRH"
+      },
+      {
+        "type": "IPC227E",
+        "key": "BDYRH"
+      },
+      {
+        "type": "IPC277E",
+        "key": "BDYRH"
+      },
+      {
+        "type": "IPC427D",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC477D",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC427E",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC477E",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC BX-39A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC PX-39A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC BX-32A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC PX-32A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC627D",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC677D",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC627E",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC677E",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC547x",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC647D",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC847D",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC647E",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC847E",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RX-545A",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RW-528A",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RW-548A",
+        "key": "PDPMV"
+      }
+    ]
+  },
+  "value": {
+    "device": [
+      {
+        "type": "IPC427D",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC477D",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC427E",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC477E",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC BX-39A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC PX-39A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC BX-32A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC PX-32A",
+        "key": "8FJYV"
+      },
+      {
+        "type": "IPC627D",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC677D",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC627E",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC677E",
+        "key": "QJ6BV"
+      },
+      {
+        "type": "IPC547x",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC647D",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC847D",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC647E",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC847E",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RX-545A",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RW-528A",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RW-548A",
+        "key": "PDPMV"
+      }
+    ]
+  },
+  "high": {
+    "device": [
+      {
+        "type": "IPC427D",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC477D",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC427E",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC477E",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC BX-39A",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC PX-39A",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC BX-32A",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC PX-32A",
+        "key": "WHXV7"
+      },
+      {
+        "type": "IPC547J",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC647D",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC847D",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC647E",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC847E",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RX-545A",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RW-528A",
+        "key": "PDPMV"
+      },
+      {
+        "type": "IPC RW-548A",
+        "key": "PDPMV"
+      }
+    ]
+  }
+}

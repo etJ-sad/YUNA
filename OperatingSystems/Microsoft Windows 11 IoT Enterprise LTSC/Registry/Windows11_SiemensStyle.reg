@@ -1,0 +1,16 @@
+Windows Registry Editor Version 5.00
+
+; Set Accent Color to Seafoam Teal (BGR: 7FFFD4)
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\DWM]
+"AccentColor"=dword:007fffd4
+
+; Ensure Manual Accent Color is Used
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]
+"AutoColorization"=dword:00000000
+
+; Enable accent color on title bars and window borders
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]
+"ColorPrevalence"=dword:00000001
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\DWM]
+"ColorPrevalence"=dword:00000001

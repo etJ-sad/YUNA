@@ -1,0 +1,56 @@
+{
+    "version": "v1.0",
+    "device": "SIMATIC IPC RS-717A",
+    "deviceConfig": [
+        {
+            "entity": "Chipset",
+            "identifier": null,
+            "driverFamilyId": 20002
+        },
+        {
+            "entity": "Win2022",
+            "identifier": null,
+            "driverFamilyId": 20053
+        },
+        {
+            "entity": "VEN_8086",
+            "identifier": "DEV_09A7",
+            "driverFamilyId": 21727
+        },
+        {
+            "entity": "Network Connections",
+            "identifier": null,
+            "driverFamilyId": 20004
+        },
+        {
+            "entity": "Virtual RAID",
+            "identifier": null,
+            "driverFamilyId": 21714
+        },
+        {
+            "entity": "QuickAssist Technology",
+            "identifier": null,
+            "driverFamilyId": 21709
+        },
+        {
+            "entity": "NVIDIA Graphics",
+            "identifier": null,
+            "driverFamilyId": 21719
+        },
+        {
+            "entity": "NET SDK",
+            "identifier": null,
+            "driverFamilyId": 21717
+        },
+        {
+            "entity": "Visual C++ 2022 X64 Minimum Runtime",
+            "identifier": null,
+            "driverFamilyId": 21716
+        },
+        {
+            "entity": "AppUp.IntelVirtualRAIDonCPUStorageManagementApp",
+            "identifier": null,
+            "driverFamilyId": 21852
+        }
+    ]
+}

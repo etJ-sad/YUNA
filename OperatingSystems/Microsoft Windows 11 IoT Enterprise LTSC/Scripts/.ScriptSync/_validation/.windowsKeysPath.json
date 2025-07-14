@@ -1,0 +1,8 @@
+{
+  "LTSC2019": ".windowsKeysLTSC2019.json",
+  "LTSC2021": ".windowsKeysLTSC2021.json",
+  "LTSC2024": ".windowsKeysLTSC2024.json",
+  "GAC": ".windowsKeysGAC.json",
+  "SAC": ".windowsKeysSAC.json",
+  "Server": ".windowsKeysServer.json"
+}

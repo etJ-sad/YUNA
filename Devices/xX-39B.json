@@ -1,0 +1,15 @@
+{
+    "deviceModel": "BX-39A",
+    "supportedOS": {
+		"Microsoft Windows 11 IoT Enterprise": {
+            "cypFile": "W10_LTSC2021_xX-39A.cyp"
+        },
+        "Microsoft Windows Server 2025 Standard": {
+            "windowsKey": "87T9D-GNGQP-38678-TRCM9-CDQK8",
+			"windowsLicense": "siemens ag   - 100055.xrm-ms"
+        }
+    },
+    "customSetting1": "device.cmd",
+    "customSetting2": "test.reg",
+    "customSetting3": "HideSearchBox.reg"
+}

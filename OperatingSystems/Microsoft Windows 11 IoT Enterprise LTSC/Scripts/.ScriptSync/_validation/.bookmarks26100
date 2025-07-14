@@ -1,0 +1,115 @@
+{
+   "checksum": "07af28fccf6d3c29ceca7b937a97965a",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "children": [ {
+               "date_added": "13332573480221334",
+               "date_last_used": "0",
+               "guid": "90260d69-4bf7-4d52-8d40-303ad7054897",
+               "id": "6",
+               "name": "IPC Support ASIS",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.siemens.com/asis",
+               "visit_count": 0
+            }, {
+               "date_added": "13332573480217334",
+               "date_last_used": "0",
+               "guid": "64105817-cf06-49d9-b525-c7cf43216e83",
+               "id": "7",
+               "name": "SIMATIC Customer Support",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://support.automation.siemens.com/",
+               "visit_count": 0
+            }, {
+               "date_added": "13332573480217334",
+               "date_last_used": "0",
+               "guid": "51c2609e-c1aa-4b56-ad2c-546730b028c0",
+               "id": "8",
+               "name": "SIMATIC PC-based Automation",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.siemens.com/pc-based",
+               "visit_count": 0
+            }, {
+               "date_added": "13332573480217334",
+               "date_last_used": "0",
+               "guid": "466a2245-f57e-4c57-82db-426e66741a55",
+               "id": "9",
+               "name": "SIMATIC PG",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.siemens.com/simatic-pg",
+               "visit_count": 0
+            }, {
+               "date_added": "13332573480213333",
+               "date_last_used": "0",
+               "guid": "8d9f5378-c097-4974-9692-0ce43fc1ebd2",
+               "id": "10",
+               "name": "SIMATIC",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.siemens.com/simatic",
+               "visit_count": 0
+            }, {
+               "date_added": "13332573480217334",
+               "date_last_used": "0",
+               "guid": "251b1527-c9ff-4931-a76b-d45ebda52aca",
+               "id": "11",
+               "name": "Siemens AG",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.siemens.com/",
+               "visit_count": 0
+            } ],
+            "date_added": "13332573765292585",
+            "date_last_used": "0",
+            "date_modified": "0",
+            "guid": "26c587a6-2395-4d75-ba68-9f19e7dc52cb",
+            "id": "5",
+            "name": "Siemens AG",
+            "source": "import_fre",
+            "type": "folder"
+         } ],
+         "date_added": "13332573765001463",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Favorites bar",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13332573765001465",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other favorites",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13332573765001468",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile favorites",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}

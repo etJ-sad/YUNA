@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Report</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .section h2 {
+            cursor: pointer;
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-top: 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .content {
+            display: none;
+            padding: 10px;
+            background: white;
+            border: 1px solid #ccc;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table td, .table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .table tr:nth-child(even) {background-color: #f2f2f2;}
+
+        .table tr:hover {background-color: #ddd;}
+
+        .table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+		.pass {
+			background-color: #d4edda;
+			color: #155724;
+		}
+
+		.fail {
+			background-color: #f8d7da;
+			color: #721c24;
+		}
+		
+		.missing {
+			background-color: #ffa500;
+			color: #212529;
+		}
+		
+		.neutral {
+			background-color: #fdfdfe; 
+			color: #212529;
+		}
+    </style>
+</head>
+<body>
+    <div id="report">
+        <!-- Device Information -->
+        <div class="section">
+            <h2 onclick="toggleSection('deviceInfoContent')">Device Information</h2>
+            <div id="deviceInfoContent" class="content">
+                <table class="table" id="deviceInfoTable">
+                    <thead>
+                        <tr>
+                            <th>Setting</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Device info data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Installed Software -->
+        <div class="section">
+            <h2 onclick="toggleSection('softwareListContent')">Installed Software</h2>
+            <div id="softwareListContent" class="content">
+                <table class="table" id="softwareListTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Software data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Installed Drivers -->
+        <div class="section">
+            <h2 onclick="toggleSection('driverListContent')">Installed Drivers</h2>
+            <div id="driverListContent" class="content">
+                <table class="table" id="driverListTable">
+                    <thead>
+                        <tr>
+                            <th>Device Name</th>
+                            <th>Driver Version</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Driver data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Partition Size -->
+        <div class="section">
+            <h2 onclick="toggleSection('diskPartitionsContent')">Partition Size</h2>
+            <div id="diskPartitionsContent" class="content">
+                <table class="table" id="diskPartitionsTable">
+                    <thead>
+                        <tr>
+                            <th>Drive Letter</th>
+                            <th>Size</th>
+                            <th>Free Space</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Partition data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Device Mask Pass -->
+        <div class="section">
+            <h2 onclick="toggleSection('devicePassContent')">Device Mask Pass</h2>
+            <div id="devicePassContent" class="content">
+                <table class="table" id="devicePassTable">
+                    <thead>
+                        <tr>
+                            <th>Detail</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Pass data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Device Mask Fail -->
+        <div class="section">
+            <h2 onclick="toggleSection('deviceFailContent')">Device Mask Fail</h2>
+            <div id="deviceFailContent" class="content">
+                <table class="table" id="deviceFailTable">
+                    <thead>
+                        <tr>
+                            <th>Detail</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Fail data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Windows Reset -->
+        <div class="section">
+            <h2 onclick="toggleSection('windowsResetContent')">Windows Reset</h2>
+            <div id="windowsResetContent" class="content">
+                <table class="table" id="windowsResetTable">
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>End Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Reset data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Windows Recovery -->
+        <div class="section">
+            <h2 onclick="toggleSection('windowsRecoveryContent')">Windows Recovery</h2>
+            <div id="windowsRecoveryContent" class="content">
+                <table class="table" id="windowsRecoveryTable">
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>End Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Recovery data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Power Schema -->
+        <div class="section">
+            <h2 onclick="toggleSection('powerSchemaContent')">Power Schema</h2>
+            <div id="powerSchemaContent" class="content">
+                <table class="table" id="powerSchemaTable">
+                    <thead>
+                        <tr>
+                            <th>Setting</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Power schema data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+		
+		<!-- Event Log -->
+        <div class="section">
+            <h2 onclick="toggleSection('EventLogContent')">Event Log</h2>
+            <div id="eventLogContent" class="content">
+                <table class="table" id="eventLogTable">
+                    <thead>
+                        <tr>
+                            <th>TimeGenerated</th>
+                            <th>EntryType</th>
+                            <th>Message</th>
+							<th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Event Log data will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.section');
+			sections.forEach(section => {
+				section.querySelector('h2').addEventListener('click', function() {
+					const currentlyActiveAccordionItemHeader = document.querySelector('.section h2.active');
+					if(currentlyActiveAccordionItemHeader && currentlyActiveAccordionItemHeader !== this) {
+						currentlyActiveAccordionItemHeader.classList.toggle('active');
+						currentlyActiveAccordionItemHeader.nextElementSibling.style.display = 'none';
+					}
+
+					this.classList.toggle('active');
+					let content = this.nextElementSibling;
+					if (content.style.display === "block") {
+						content.style.display = "none";
+					} else {
+						content.style.display = "block";
+					}
+				});
+			});
+		});
+	</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const data = report;
+				
+			const deviceInfoTableBody = document.getElementById('deviceInfoTable').querySelector('tbody');
+			data[0].value.forEach(function(item) {
+				let row = document.createElement('tr');
+				row.innerHTML = `<td>${item.Setting}</td><td>${item.Value}</td><td class="${item.Status}">${item.Status}</td>`;
+				deviceInfoTableBody.appendChild(row);
+			});
+
+			const softwareListTableBody = document.getElementById('softwareListTable').querySelector('tbody');
+			Object.keys(data[1]).forEach(key => {
+				let softwareItem = data[1][key];
+				let row = document.createElement('tr');
+				row.innerHTML = `<td>${softwareItem.Name}</td><td class="${softwareItem.Version}">${softwareItem.Version}</td>`;
+				softwareListTableBody.appendChild(row);
+			});
+
+			const driverListTableBody = document.getElementById('driverListTable').querySelector('tbody');
+			Object.keys(data[2]).forEach(key => {
+				let driverItem = data[2][key];
+				let row = document.createElement('tr');
+				row.innerHTML = `<td>${driverItem.DeviceName}</td><td class="${driverItem.DriverVersion}">${driverItem.DriverVersion}</td>`;
+				driverListTableBody.appendChild(row);
+			});
+
+			const diskPartitionsTableBody = document.getElementById('diskPartitionsTable').querySelector('tbody');
+			data[3].value.forEach(partition => {
+				let row = document.createElement('tr');
+				row.innerHTML = `<td>${partition.DriveLetter}</td><td>${partition.Size_GB}</td><td>${partition.FreeSpace_GB}</td><td class="${partition.Status}">${partition.Status}</td>`;
+				diskPartitionsTableBody.appendChild(row);
+			});
+			
+			const powerSchemaTableBody = document.getElementById('powerSchemaTable').querySelector('tbody');
+			data[7].value.forEach(item => {
+				let row = document.createElement('tr');
+				row.innerHTML = `<td>${item.Setting}</td><td>${item.Value}</td><td class="${item.Status}">${item.Status}</td>`;
+				powerSchemaTableBody.appendChild(row);
+			});
+			
+			const devicePassTableBody = document.getElementById('devicePassTable').querySelector('tbody');
+			const passData = data[5];
+			if (Array.isArray(passData.value)) {
+				passData.value.forEach(item => {
+					const row = document.createElement('tr');
+					row.classList.add(item.status.toLowerCase());
+					row.innerHTML = `<td>${item.detail}</td><td class="${item.status.toLowerCase()}">${item.status}</td>`;
+					devicePassTableBody.appendChild(row);
+				});
+			} else {
+				const row = document.createElement('tr');
+				row.classList.add(passData.status.toLowerCase());
+				row.innerHTML = `<td>${passData.detail}</td><td class="${passData.status.toLowerCase()}">${passData.status}</td>`;
+				devicePassTableBody.appendChild(row);
+			}
+
+			const deviceFailTableBody = document.getElementById('deviceFailTable').querySelector('tbody');
+			const failData = data[6];
+			if (Array.isArray(failData.value)) {
+				failData.value.forEach(item => {
+					const row = document.createElement('tr');
+					row.classList.add(item.status.toLowerCase());
+					row.innerHTML = `<td>${item.detail}</td><td class="${item.status.toLowerCase()}">${item.status}</td>`;
+					deviceFailTableBody.appendChild(row);
+				});
+			} else {
+				const row = document.createElement('tr');
+				row.classList.add(failData.status.toLowerCase());
+				row.innerHTML = `<td>${failData.detail}</td><td class="${failData.status.toLowerCase()}">${failData.status}</td>`;
+				deviceFailTableBody.appendChild(row);
+			}
+
+			const windowsResetTableBody = document.getElementById('windowsResetTable').querySelector('tbody');
+			const resetItem = data[8];
+			const resetRow = document.createElement('tr');
+			resetRow.classList.add(resetItem.Status.toLowerCase());
+			resetRow.innerHTML = `<td>${resetItem.Operation}</td><td>${resetItem.EndTime}</td><td class="${resetItem.Status.toLowerCase()}">${resetItem.Status}</td>`;
+			windowsResetTableBody.appendChild(resetRow);
+			
+			const windowsRecoveryTableBody = document.getElementById('windowsRecoveryTable').querySelector('tbody');
+			const recoveryItem = data[9];
+			const recoveryRow = document.createElement('tr');
+			recoveryRow.classList.add(recoveryItem.Status.toLowerCase());
+			recoveryRow.innerHTML = `<td>${recoveryItem.Operation}</td><td>${recoveryItem.EndTime}</td><td class="${recoveryItem.Status.toLowerCase()}">${recoveryItem.Status}</td>`;
+			windowsRecoveryTableBody.appendChild(recoveryRow);
+			
+			const eventLogTableBody = document.getElementById('eventLogTable').querySelector('tbody');
+			data[10].value.forEach(item => {
+				let row = document.createElement('tr');
+				row.innerHTML = `<td>${item.TimeGenerated}</td><td>${item.EntryType}</td><td>${item.Message}</td><td class="${item.Status}">${item.Status}</td>`;
+				eventLogTableBody.appendChild(row);
+			});
+
+        });
+    </script>	
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.section');
+			sections.forEach(section => {
+				const tableBody = section.querySelector('.table tbody');
+				if (tableBody.querySelector('.fail')) { 
+					const header = section.querySelector('h2');
+					const tableHeaders = section.querySelectorAll('.table th');
+
+					header.style.backgroundColor = '#f8d7da';
+					header.style.color = '#721c24';
+
+					tableHeaders.forEach(th => {
+						th.style.backgroundColor = '#f8d7da';
+						th.style.color = '#721c24';
+					});
+				} else {
+					const header = section.querySelector('h2');
+					const tableHeaders = section.querySelectorAll('.table th');
+
+					header.style.backgroundColor = '#d4edda';
+					header.style.color = '#155724';
+
+					tableHeaders.forEach(th => {
+						th.style.backgroundColor = '#d4edda';
+						th.style.color = '#155724';
+					});
+				}
+				if (tableBody.querySelector('.missing')) { 
+					const header = section.querySelector('h2');
+					const tableHeaders = section.querySelectorAll('.table th');
+
+					header.style.backgroundColor = '#f8d7da';
+					header.style.color = '#721c24';
+
+					tableHeaders.forEach(th => {
+						th.style.backgroundColor = '#f8d7da';
+						th.style.color = '#721c24';
+					});
+				}
+			});
+		});
+	</script>

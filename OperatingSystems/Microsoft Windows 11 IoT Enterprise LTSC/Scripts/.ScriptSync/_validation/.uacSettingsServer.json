@@ -1,0 +1,6 @@
+{
+  "ConsentPromptBehaviorAdmin": "ConsentPromptBehaviorAdmin: Prompt for consent",
+  "EnableLUA": "EnableLUA (UAC is enabled): Enabled",
+  "ConsentPromptBehaviorUser": "ConsentPromptBehaviorUser: Prompt for credentials",
+  "PromptOnSecureDesktop": "PromptOnSecureDesktop: Enabled"
+}

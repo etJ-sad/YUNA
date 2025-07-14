@@ -1,0 +1,6 @@
+{
+  "MD-57A": ".powerschema_simatic_mobile.powersettings",
+  "ITP 1000": ".powerschema_simatic_mobile.powersettings",
+  "default": ".powerschema_simatic_ipc.powersettings",
+  "default_server": ".powerschema_simatic_ipc_server.powersettings"
+}

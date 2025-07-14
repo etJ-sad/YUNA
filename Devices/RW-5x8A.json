@@ -1,0 +1,11 @@
+{
+    "deviceModel": "SIMATIC IPC RW-545A",
+    "supportedOS": [
+        "Microsoft Windows Server 2025 Standard",
+        "Microsoft Windows 11 IoT Enterprise"
+    ],
+    "customSetting1": "device.cmd",
+    "customSetting2": "test.reg",
+	"customSetting3": "HideSearchBox.reg",
+	"customSetting3": "HideSearchBox1.reg"
+}

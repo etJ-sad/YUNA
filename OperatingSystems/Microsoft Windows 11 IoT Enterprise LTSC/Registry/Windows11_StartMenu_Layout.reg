@@ -1,0 +1,24 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\current]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\current\device]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\current\device\Start]
+"ConfigureStartPins"="{\"pinnedList\":[{\"desktopAppLink\":\"%ALLUSERSPROFILE%\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Microsoft Edge.lnk\"},{\"packagedAppId\":\"microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.mail\"},{\"packagedAppId\":\"microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.calendar\"},{\"packagedAppId\":\"Microsoft.WindowsStore_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.Windows.Photos_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel\"},{\"packagedAppId\":\"Microsoft.WindowsCalculator_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.WindowsAlarms_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.WindowsNotepad_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.Paint_8wekyb3d8bbwe!App\"},{\"desktopAppLink\":\"%APPDATA%\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\File Explorer.lnk\"},{\"packagedAppId\":\"Microsoft.ZuneVideo_8wekyb3d8bbwe!Microsoft.ZuneVideo\"},{\"packagedAppId\":\"Microsoft.Getstarted_8wekyb3d8bbwe!App\"}]}"
+"ConfigureStartPins_ProviderSet"=dword:00000001
+"ConfigureStartPins_WinningProvider"="B5292708-1619-419B-9923-E5D9F3925E71"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\providers]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\providers\B5292708-1619-419B-9923-E5D9F3925E71]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\providers\B5292708-1619-419B-9923-E5D9F3925E71\default]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\providers\B5292708-1619-419B-9923-E5D9F3925E71\default\Device]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PolicyManager\providers\B5292708-1619-419B-9923-E5D9F3925E71\default\Device\Start]
+"ConfigureStartPins"="{\"pinnedList\":[{\"desktopAppLink\":\"%ALLUSERSPROFILE%\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\Microsoft Edge.lnk\"},{\"packagedAppId\":\"microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.mail\"},{\"packagedAppId\":\"microsoft.windowscommunicationsapps_8wekyb3d8bbwe!microsoft.windowslive.calendar\"},{\"packagedAppId\":\"Microsoft.WindowsStore_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.Windows.Photos_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"windows.immersivecontrolpanel_cw5n1h2txyewy!microsoft.windows.immersivecontrolpanel\"},{\"packagedAppId\":\"Microsoft.WindowsCalculator_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.WindowsAlarms_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.WindowsNotepad_8wekyb3d8bbwe!App\"},{\"packagedAppId\":\"Microsoft.Paint_8wekyb3d8bbwe!App\"},{\"desktopAppLink\":\"%APPDATA%\\\\Microsoft\\\\Windows\\\\Start Menu\\\\Programs\\\\File Explorer.lnk\"},{\"packagedAppId\":\"Microsoft.ZuneVideo_8wekyb3d8bbwe!Microsoft.ZuneVideo\"},{\"packagedAppId\":\"Microsoft.Getstarted_8wekyb3d8bbwe!App\"}]}"
+"ConfigureStartPins_LastWrite"=dword:00000001

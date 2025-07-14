@@ -1,0 +1,138 @@
+{
+  "entry": {
+    "device": [
+      {
+        "type": "BX-32A",
+        "key": "WT4C3"
+      },
+      {
+        "type": "PX-32A",
+        "key": "WT4C3"
+      },
+      {
+        "type": "BX-39A",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "PX-39A",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "PX-39A PRO",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "627E",
+        "key": "BP49D"
+      },
+      {
+        "type": "677E",
+        "key": "BP49D"
+      }
+    ]
+  },
+  "value": {
+    "device": [
+      {
+        "type": "BX-32A",
+        "key": "WT4C3"
+      },
+      {
+        "type": "PX-32A",
+        "key": "WT4C3"
+      },
+      {
+        "type": "BX-39A",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "PX-39A",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "PX-39A PRO",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "627E",
+        "key": "BP49D"
+      },
+      {
+        "type": "677E",
+        "key": "BP49D"
+      },
+      {
+        "type": "RW-545A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "RC-545A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "RW-528A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "RC-548A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "MD-57A",
+        "key": "BP49D"
+      }
+    ]
+  },
+  "high": {
+    "device": [
+      {
+        "type": "BX-32A",
+        "key": "WT4C3"
+      },
+      {
+        "type": "PX-32A",
+        "key": "WT4C3"
+      },
+      {
+        "type": "BX-39A",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "PX-39A",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "PX-39A PRO",
+        "key": "DJ66Q"
+      },
+      {
+        "type": "627E",
+        "key": "BP49D"
+      },
+      {
+        "type": "677E",
+        "key": "BP49D"
+      },
+      {
+        "type": "RW-545A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "RC-545A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "RW-528A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "RC-548A",
+        "key": "6X3GQ"
+      },
+      {
+        "type": "MD-57A",
+        "key": "BP49D"
+      }
+    ]
+  }
+}

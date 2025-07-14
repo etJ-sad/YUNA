@@ -1,0 +1,121 @@
+{
+    "version": "v1.2",
+    "device": "SIMATIC IPC MD-57A",
+    "deviceConfig": [
+        {
+            "entity": "Chipset",
+            "identifier": null,
+            "driverFamilyId": 20002
+        },
+        {
+            "entity": "Management Engine Components",
+            "identifier": null,
+            "driverFamilyId": 20005
+        },
+        {
+            "entity": "VEN_8086",
+            "identifier": "DEV_4626",
+            "driverFamilyId": 20001
+        },
+        {
+            "entity": "VEN_8086",
+            "identifier": "DEV_A7A0",
+            "driverFamilyId": 20001
+        },
+        {
+            "entity": "VID_06CB",
+            "identifier": "PID_016B",
+            "driverFamilyId": 21725
+        },
+        {
+            "entity": "Network Connections",
+            "identifier": null,
+            "driverFamilyId": 20004
+        },
+        {
+            "entity": "Wireless Bluetooth",
+            "identifier": null,
+            "driverFamilyId": 21701
+        },
+        {
+            "entity": "VEN_8086",
+            "identifier": "DEV_51F0",
+            "driverFamilyId": 21715
+        },
+        {
+            "entity": "VEN_8086",
+            "identifier": "DEV_51F1",
+            "driverFamilyId": 21715
+        },
+        {
+            "entity": "INTC1070",
+            "identifier": null,
+            "driverFamilyId": 21705
+        },
+        {
+            "entity": "Serial IO",
+            "identifier": null,
+            "driverFamilyId": 20007
+        },
+        {
+            "entity": "VEN_8086",
+            "identifier": "DEV_464F",
+            "driverFamilyId": 21704
+        },
+        {
+            "entity": "VEN_8086",
+            "identifier": "DEV_A74F",
+            "driverFamilyId": 21704
+        },
+        {
+            "entity": "Realtek Card Reader",
+            "identifier": null,
+            "driverFamilyId": 21722
+        },
+        {
+            "entity": "Realtek Audio Driver",
+            "identifier": null,
+            "driverFamilyId": 21720
+        },
+        {
+            "entity": "Thunderbolt\u2122 Software",
+            "identifier": null,
+            "driverFamilyId": 21711
+        },
+        {
+            "entity": "Status Indicator",
+            "identifier": null,
+            "driverFamilyId": 21723
+        },
+		{
+            "entity": "NVIDIA Graphics",
+            "identifier": null,
+            "driverFamilyId": 21719
+        },
+        {
+            "entity": "IntelManagementandSecurityStatus",
+            "identifier": null,
+            "driverFamilyId": 21707
+        },
+        {
+            "entity": "IntelGraphicsExperience",
+            "identifier": null,
+            "driverFamilyId": 20010
+        },
+        {
+            "entity": "RealtekAudioControl",
+            "identifier": null,
+            "driverFamilyId": 21721
+        },
+        {
+            "entity": "ThunderboltControlCenter",
+            "identifier": null,
+            "driverFamilyId": 21712
+        },
+        {
+            "entity": "Microsoft.WindowsCamera",
+            "identifier": null,
+            "driverFamilyId": 21718
+        }
+    ]
+}

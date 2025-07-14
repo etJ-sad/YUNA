@@ -1,0 +1,56 @@
+{
+  "version": "v1.0",
+  "device": "SIMATIC IPC BX-21A",
+  "deviceConfig": [
+    {
+      "entity": "Chipset",
+      "identifier": null,
+      "driverFamilyId": 20002
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_4B28",
+      "driverFamilyId": 20007
+    },
+    {
+      "entity": "SIMATIC IPC ORCLA",
+      "identifier": null,
+      "driverFamilyId": 20009
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_4B70", 
+      "driverFamilyId": 20005
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_4BB0", 
+      "driverFamilyId": 20008
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_4BA0",
+      "driverFamilyId": 20008
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_4B32",
+      "driverFamilyId": 20008
+    },
+	{
+      "entity": "VEN_8086",
+      "identifier": "DEV_4555",
+      "driverFamilyId": 20001
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_4BB3",
+      "driverFamilyId": 21753
+    },
+    {
+      "entity": "IntelGraphicsExperience",
+      "identifier": null,
+      "driverFamilyId": 20010
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "partitions": [
+    {
+      "drive_size_max": 64,
+      "partition_size_gb": 40
+    },
+    {
+      "drive_size_max": 128,
+      "partition_size_gb": 60
+    },
+    {
+      "drive_size_max": 256,
+      "partition_size_gb": 120
+    },
+    {
+      "drive_size_max": 512,
+      "partition_size_gb": 240
+    },
+    {
+      "drive_size_max": 1000,
+      "partition_size_gb": 300
+    },
+    {
+      "drive_size_max": 2000,
+      "partition_size_gb": 400
+    }
+  ]
+}

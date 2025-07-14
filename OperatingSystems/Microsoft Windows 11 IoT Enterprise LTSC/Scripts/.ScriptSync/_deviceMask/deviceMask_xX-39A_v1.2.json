@@ -1,0 +1,86 @@
+{
+  "version": "v1.2",
+  "device": "SIMATIC IPC BX-39A / SIMATIC IPC PX-39A / SIMATIC IPC PX-39A PRO",
+  "deviceConfig": [
+    {
+      "entity": "Chipset",
+      "identifier": null,
+      "driverFamilyId": 20002
+    },
+    {
+      "entity": "Network Connections",
+      "identifier": null,
+      "driverFamilyId": 20004
+    },
+    {
+      "entity": "Serial IO",
+      "identifier": null,
+      "driverFamilyId": 20007
+    },
+    {
+      "entity": "IPCRaidWarningDaemon",
+      "identifier": null,
+      "driverFamilyId": 20056
+    },
+    {
+      "entity": "SIMATIC IPC ORCLA",
+      "identifier": null,
+      "driverFamilyId": 20009
+    },
+	{
+      "entity": "SIMATIC IPC DiagBase",
+      "identifier": null,
+      "driverFamilyId": 20052
+    },
+	{
+      "entity": "Panel Drivers",
+      "identifier": null,
+      "driverFamilyId": 20055
+    },
+    {
+      "entity": "Management Engine Components",
+      "identifier": null,
+      "driverFamilyId": 20005
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_43AC",
+      "driverFamilyId": 20008
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_9A70",
+      "driverFamilyId": 20001
+    },
+	{
+      "entity": "VEN_8086",
+      "identifier": "DEV_9A68",
+      "driverFamilyId": 20001
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_43C8",
+      "driverFamilyId": 20003
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_9A0B",
+      "driverFamilyId": 20006
+    },
+    {
+      "entity": "IntelGraphicsExperience",
+      "identifier": null,
+      "driverFamilyId": 20010
+    },
+    {
+      "entity": "IntelOptaneMemoryandStorageManagement",
+      "identifier": null,
+      "driverFamilyId": 21706
+    },
+    {
+      "entity": "IntelManagementandSecurityStatus",
+      "identifier": null,
+      "driverFamilyId": 21707
+    }
+  ]
+}

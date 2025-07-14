@@ -1,0 +1,41 @@
+{
+    "version": "v1.1",
+    "device": "SIMATIC IPC RS-828A",
+    "deviceConfig": [
+        {
+            "entity": "Aspeed",
+            "identifier": null,
+            "driverFamilyId": 20053
+        },
+        {
+            "entity": "VEN_1000",
+			"identifier": "DEV_10E2",
+            "driverFamilyId": 21751
+        },
+        {
+            "entity": "VEN_1000",
+			"identifier": "DEV_00A5",
+            "driverFamilyId": 21851
+        },
+        {
+            "entity": "LSI Storage",
+            "identifier": null,
+            "driverFamilyId": 21752
+        },
+        {
+            "entity": "AMD_Chipset",
+            "identifier": null,
+            "driverFamilyId": 20051
+        },
+		{
+		  "entity": "Network Connections",
+		  "identifier": null,
+		  "driverFamilyId": 20004
+		},
+        {
+            "entity": "NVIDIA Graphics",
+            "identifier": null,
+            "driverFamilyId": 21719
+        }
+    ]
+}

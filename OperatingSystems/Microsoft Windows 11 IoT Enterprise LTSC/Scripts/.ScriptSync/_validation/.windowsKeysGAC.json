@@ -1,0 +1,14 @@
+{
+  "GAC": {
+    "device": [
+      {
+        "type": "MD-57A",
+        "key": "6CTBR"
+      },
+	  {
+        "type": "M6",
+        "key": "6CTBR"
+      }
+    ]
+  }
+}

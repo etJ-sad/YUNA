@@ -1,0 +1,96 @@
+{
+  "version": "v1.1",
+  "device": "SIMATIC IPC RC-545A",
+  "deviceConfig": [
+    {
+      "entity": "Realtek Audio Driver",
+      "identifier": null,
+      "driverFamilyId": 21720
+    },
+    {
+      "entity": "Chipset",
+      "identifier": null,
+      "driverFamilyId": 20002
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_4680",
+      "driverFamilyId": 20001
+    },
+	{
+      "entity": "VEN_8086",
+      "identifier": "DEV_4692",
+      "driverFamilyId": 20001
+    },
+	{
+      "entity": "VEN_8086",
+      "identifier": "DEV_4690",
+      "driverFamilyId": 20001
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_A780",
+      "driverFamilyId": 20001
+    },
+	{
+      "entity": "VEN_8086",
+      "identifier": "DEV_4692",
+      "driverFamilyId": 20001
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_A74F",
+      "driverFamilyId": 21704
+    },
+    {
+      "entity": "VEN_8086",
+      "identifier": "DEV_464F",
+      "driverFamilyId": 21704
+    },
+    {
+      "entity": "IoDriver",
+      "identifier": "null",
+      "driverFamilyId": 21728
+    },
+    {
+      "entity": "Management Engine Components",
+      "identifier": null,
+      "driverFamilyId": 20005
+    },
+    {
+      "entity": "Network Connections",
+      "identifier": null,
+      "driverFamilyId": 20004
+    },
+    {
+      "entity": "Nvidia Graphics",
+      "identifier": null,
+      "driverFamilyId": 21719
+    },
+    {
+      "entity": "Serial IO",
+      "identifier": null,
+      "driverFamilyId": 20007
+    },
+    {
+      "entity": "SIMATIC IPC ORCLA",
+      "identifier": null,
+      "driverFamilyId": 20009
+    },
+    {
+      "entity": "RealtekAudioControl",
+      "identifier": null,
+      "driverFamilyId": 21721
+    },
+    {
+      "entity": "IntelGraphicsExperience",
+      "identifier": null,
+      "driverFamilyId": 20010
+    },
+    {
+      "entity": "IntelManagementandSecurityStatus",
+      "identifier": null,
+      "driverFamilyId": 21707
+    }
+  ]
+}

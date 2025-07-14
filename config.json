@@ -1,0 +1,48 @@
+{
+    "version": "1.000.38",
+    "debug": true,
+	"pxeboot": false,
+    "modelMapping": {
+        "BX-39A": "xX-39A",
+        "PX-39A": "xX-39A",
+        "PX-39A PRO": "xX-39A",
+        "BX-32A": "xX-32A",
+        "PX-32A": "xX-32A",
+        "RW-528A": "RW-5x8A",
+        "RW-548A": "RW-5x8A"
+    },
+    "images": [
+        {
+            "stage": "PRE RESEALED IMAGE",
+            "wimIndex": 1,
+            "imageType": "AUDIT",
+            "wimFileName": "-AUDIT-IPC-xxx-BL-xx-a",
+            "wimDescription": "Microsoft Windows xx IoT Enterprise xxxx for SIMATIC IPC xx",
+            "wimNote": "This edition of Windows has been developed by Siemens for the SIMATIC IPC xx product family."
+        },
+        {
+            "stage": "RESEALED IMAGE",
+            "wimIndex": 1,
+            "imageType": "RESEALED",
+            "wimFileName": "-RESEALED-IPC-xxx-BL-xx-a",
+            "wimDescription": "Microsoft Windows xx IoT Enterprise xxxx for SIMATIC IPC xx",
+            "wimNote": "This edition of Windows has been developed by Siemens for the SIMATIC IPC xx product family.",
+            "usedDriverBaseline": "BL-xx-a",
+            "imageBuild": "a",
+            "A5E": "A5Exxxxxxxx",
+            "imageVariant": "FACTORY"
+        },
+        {
+            "stage": "RECOVERY IMAGE",
+            "wimIndex": 1,
+            "imageType": "RECOVERY",
+            "wimFileName": "-RECOVERY-IPC-xxx-BL-xx-a",
+            "wimDescription": "Microsoft Windows xx IoT Enterprise xxxx for SIMATIC IPC xx",
+            "wimNote": "This edition of Windows has been developed by Siemens for the SIMATIC IPC xx product family.",
+            "usedDriverBaseline": "BL-0-a",
+            "imageBuild": "a",
+            "A5E": "A5Exxxxxxxx",
+            "imageVariant": "RECOVERY"
+        }
+    ]
+}

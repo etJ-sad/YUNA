@@ -1,0 +1,187 @@
+Settings belonging to no subgroup - Require a password on wakeup:No
+Settings belonging to no subgroup - Require a password on wakeup:Yes
+Settings belonging to no subgroup - Power plan type:Power saver
+Settings belonging to no subgroup - Power plan type:High performance
+Settings belonging to no subgroup - Power plan type:Balanced
+Settings belonging to no subgroup - Device idle policy:Performance
+Settings belonging to no subgroup - Device idle policy:Power savings
+Settings belonging to no subgroup - Disconnected Standby Mode:Normal
+Settings belonging to no subgroup - Disconnected Standby Mode:Aggressive
+Settings belonging to no subgroup - Networking connectivity in Standby:Disable
+Settings belonging to no subgroup - Networking connectivity in Standby:Enable
+Settings belonging to no subgroup - Networking connectivity in Standby:Managed by Windows
+Hard disk - AHCI Link Power Management - HIPM/DIPM:Active
+Hard disk - AHCI Link Power Management - HIPM/DIPM:HIPM
+Hard disk - AHCI Link Power Management - HIPM/DIPM:HIPM+DIPM
+Hard disk - AHCI Link Power Management - HIPM/DIPM:DIPM
+Hard disk - AHCI Link Power Management - HIPM/DIPM:Lowest
+Hard disk - NVMe NOPPME:Off
+Hard disk - NVMe NOPPME:On
+Internet Explorer mode - JavaScript Timer Frequency:Maximum Power Savings
+Internet Explorer mode - JavaScript Timer Frequency:Maximum Performance
+Desktop background settings - Slide show:Available
+Desktop background settings - Slide show:Paused
+Wireless Adapter Settings - Power Saving Mode:Maximum Performance
+Wireless Adapter Settings - Power Saving Mode:Low Power Saving
+Wireless Adapter Settings - Power Saving Mode:Medium Power Saving
+Wireless Adapter Settings - Power Saving Mode:Maximum Power Saving
+Sleep - Legacy RTC mitigations:Disable
+Sleep - Legacy RTC mitigations:Enable
+Sleep - Allow Away Mode Policy:No
+Sleep - Allow Away Mode Policy:Yes
+Sleep - Allow hybrid sleep:Off
+Sleep - Allow hybrid sleep:On
+Sleep - Allow system required policy:No
+Sleep - Allow system required policy:Yes
+Sleep - Allow Standby States:Off
+Sleep - Allow Standby States:On
+Sleep - Allow wake timers:Disable
+Sleep - Allow wake timers:Enable
+Sleep - Allow wake timers:Important Wake Timers Only
+Sleep - Allow sleep with remote opens:Off
+Sleep - Allow sleep with remote opens:On
+USB settings - USB selective suspend setting:Disabled
+USB settings - USB selective suspend setting:Enabled
+USB settings - Setting IOC on all TDs:Disabled
+USB settings - Setting IOC on all TDs:Enabled
+USB settings - USB 3 Link Power Mangement:Off
+USB settings - USB 3 Link Power Mangement:Minimum power savings
+USB settings - USB 3 Link Power Mangement:Moderate power savings
+USB settings - USB 3 Link Power Mangement:Maximum power savings
+Idle Resiliency - Deep Sleep Enabled/Disabled:Deep Sleep Disabled
+Idle Resiliency - Deep Sleep Enabled/Disabled:Deep Sleep Enabled
+Intel(R) Graphics Settings - Intel(R) Graphics Power Plan:Maximum Battery Life
+Intel(R) Graphics Settings - Intel(R) Graphics Power Plan:Balanced
+Intel(R) Graphics Settings - Intel(R) Graphics Power Plan:Maximum Performance
+Interrupt Steering Settings - Interrupt Steering Mode:Default
+Interrupt Steering Settings - Interrupt Steering Mode:Any processor
+Interrupt Steering Settings - Interrupt Steering Mode:Any unparked processor with time delay
+Interrupt Steering Settings - Interrupt Steering Mode:Any unparked processor
+Interrupt Steering Settings - Interrupt Steering Mode:Lock Interrupt Routing
+Interrupt Steering Settings - Interrupt Steering Mode:Processor 0
+Interrupt Steering Settings - Interrupt Steering Mode:Processor 1
+Power buttons and lid - Lid close action:Do nothing
+Power buttons and lid - Lid close action:Sleep
+Power buttons and lid - Lid close action:Hibernate
+Power buttons and lid - Lid close action:Shut down
+Power buttons and lid - Power button action:Do nothing
+Power buttons and lid - Power button action:Sleep
+Power buttons and lid - Power button action:Hibernate
+Power buttons and lid - Power button action:Shut down
+Power buttons and lid - Power button action:Turn off the display
+Power buttons and lid - Enable forced button/lid shutdown:Off
+Power buttons and lid - Enable forced button/lid shutdown:On
+Power buttons and lid - Sleep button action:Do nothing
+Power buttons and lid - Sleep button action:Sleep
+Power buttons and lid - Sleep button action:Hibernate
+Power buttons and lid - Sleep button action:Shut down
+Power buttons and lid - Sleep button action:Turn off the display
+Power buttons and lid - Lid open action:Do nothing
+Power buttons and lid - Lid open action:Turn on the display
+Power buttons and lid - Start menu power button:Sleep
+Power buttons and lid - Start menu power button:Hibernate
+Power buttons and lid - Start menu power button:Shut down
+PCI Express - Link State Power Management:Off
+PCI Express - Link State Power Management:Moderate power savings
+PCI Express - Link State Power Management:Maximum power savings
+Processor power management - Allow Throttle States:Off
+Processor power management - Allow Throttle States:On
+Processor power management - Allow Throttle States:Automatic
+Processor power management - Processor performance decrease policy:Ideal
+Processor power management - Processor performance decrease policy:Single
+Processor power management - Processor performance decrease policy:Rocket
+Processor power management - Processor performance decrease policy for Processor Power Efficiency Class 1:Ideal
+Processor power management - Processor performance decrease policy for Processor Power Efficiency Class 1:Single
+Processor power management - Processor performance decrease policy for Processor Power Efficiency Class 1:Rocket
+Processor power management - Processor performance core parking parked performance state:No Preference
+Processor power management - Processor performance core parking parked performance state:Deepest Performance State
+Processor power management - Processor performance core parking parked performance state:Lightest Performance State
+Processor power management - Processor performance core parking parked performance state for Processor Power Efficiency Class 1:No Preference
+Processor power management - Processor performance core parking parked performance state for Processor Power Efficiency Class 1:Deepest Performance State
+Processor power management - Processor performance core parking parked performance state for Processor Power Efficiency Class 1:Lightest Performance State
+Processor power management - Processor performance increase policy:Ideal
+Processor power management - Processor performance increase policy:Single
+Processor power management - Processor performance increase policy:Rocket
+Processor power management - Processor performance increase policy:IdealAggressive
+Processor power management - Processor performance increase policy for Processor Power Efficiency Class 1:Ideal
+Processor power management - Processor performance increase policy for Processor Power Efficiency Class 1:Single
+Processor power management - Processor performance increase policy for Processor Power Efficiency Class 1:Rocket
+Processor power management - Processor performance increase policy for Processor Power Efficiency Class 1:IdealAggressive
+Processor power management - Processor duty cycling:Disabled
+Processor power management - Processor duty cycling:Enabled
+Processor power management - Processor idle disable:Enable idle
+Processor power management - Processor idle disable:Disable idle
+Processor power management - Processor idle threshold scaling:Disable scaling
+Processor power management - Processor idle threshold scaling:Enable scaling
+Processor power management - Processor performance core parking decrease policy:Ideal number of cores
+Processor power management - Processor performance core parking decrease policy:Single core
+Processor power management - Processor performance core parking decrease policy:All possible cores
+Processor power management - Processor performance core parking decrease policy:One eighth cores
+Processor power management - Heterogeneous policy in effect:Use heterogeneous policy 0
+Processor power management - Heterogeneous policy in effect:Use heterogeneous policy 1
+Processor power management - Heterogeneous policy in effect:Use heterogeneous policy 2
+Processor power management - Heterogeneous policy in effect:Use heterogeneous policy 3
+Processor power management - Heterogeneous policy in effect:Use heterogeneous policy 4
+Processor power management - Processor performance autonomous mode:Disabled
+Processor power management - Processor performance autonomous mode:Enabled
+Processor power management - Heterogeneous thread scheduling policy:All processors
+Processor power management - Heterogeneous thread scheduling policy:Performant processors
+Processor power management - Heterogeneous thread scheduling policy:Prefer performant processors
+Processor power management - Heterogeneous thread scheduling policy:Efficient processors
+Processor power management - Heterogeneous thread scheduling policy:Prefer efficient processors
+Processor power management - Heterogeneous thread scheduling policy:Automatic
+Processor power management - System cooling policy:Passive
+Processor power management - System cooling policy:Active
+Processor power management - Heterogeneous short running thread scheduling policy:All processors
+Processor power management - Heterogeneous short running thread scheduling policy:Performant processors
+Processor power management - Heterogeneous short running thread scheduling policy:Prefer performant processors
+Processor power management - Heterogeneous short running thread scheduling policy:Efficient processors
+Processor power management - Heterogeneous short running thread scheduling policy:Prefer efficient processors
+Processor power management - Heterogeneous short running thread scheduling policy:Automatic
+Processor power management - Processor performance boost mode:Disabled
+Processor power management - Processor performance boost mode:Enabled
+Processor power management - Processor performance boost mode:Aggressive
+Processor power management - Processor performance boost mode:Efficient Enabled
+Processor power management - Processor performance boost mode:Efficient Aggressive
+Processor power management - Processor performance boost mode:Aggressive At Guaranteed
+Processor power management - Processor performance boost mode:Efficient Aggressive At Guaranteed
+Processor power management - Processor performance core parking increase policy:Ideal number of cores
+Processor power management - Processor performance core parking increase policy:Single core
+Processor power management - Processor performance core parking increase policy:All possible cores
+Processor power management - Processor performance core parking increase policy:One eighth cores
+Processor power management - Processor performance core parking utility distribution:Disabled
+Processor power management - Processor performance core parking utility distribution:Enabled
+Graphics settings - GPU preference policy:None
+Graphics settings - GPU preference policy:Low Power
+Display - Advanced Color quality bias:Advanced Color power saving bias
+Display - Advanced Color quality bias:Advanced Color visual quality bias
+Display - Adaptive display:Off
+Display - Adaptive display:On
+Display - Allow display required policy:No
+Display - Allow display required policy:Yes
+Display - Enable adaptive brightness:Off
+Display - Enable adaptive brightness:On
+Presence Aware Power Behavior - User Presence Prediction mode:Disabled
+Presence Aware Power Behavior - User Presence Prediction mode:Enabled
+Multimedia settings - When sharing media:Allow the computer to sleep
+Multimedia settings - When sharing media:Prevent idling to sleep
+Multimedia settings - When sharing media:Allow the computer to enter Away Mode
+Multimedia settings - Video playback quality bias:Video playback power-saving bias
+Multimedia settings - Video playback quality bias:Video playback performance bias
+Multimedia settings - When playing video:Optimize video quality
+Multimedia settings - When playing video:Balanced
+Multimedia settings - When playing video:Optimize power savings
+Energy Saver settings - Energy Saver Policy:User
+Energy Saver settings - Energy Saver Policy:Aggressive
+Battery - Critical battery notification:Off
+Battery - Critical battery notification:On
+Battery - Critical battery action:Do nothing
+Battery - Critical battery action:Sleep
+Battery - Critical battery action:Hibernate
+Battery - Critical battery action:Shut down
+Battery - Low battery notification:Off
+Battery - Low battery notification:On
+Battery - Low battery action:Do nothing
+Battery - Low battery action:Sleep
+Battery - Low battery action:Hibernate
+Battery - Low battery action:Shut down
