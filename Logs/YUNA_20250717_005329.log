@@ -1,0 +1,28 @@
+﻿[2025-07-17T00:53:29.897+02:00] [INIT] [YUNA] [CID:e754b32d] Logging system initialized successfully
+    Context: {"LogFormat":"Structured","OutputTargets":"File","LogVersion":"2.0.1","CorrelationId":"e754b32d-cdaf-4e04-ad9e-097676da5ddd","SessionId":"d203d59f-da73-4476-ac74-05b476a83bad"}
+[2025-07-17T00:53:29.918+02:00] [SUCCESS] [YUNA] [CID:e754b32d] Enhanced logging system initialized successfully
+[2025-07-17T00:53:30.033+02:00] [ERROR] [YUNA] [CID:e754b32d] Model mapping JSON not found at: C:\Users\z004ac7v\SW_ImageCreatorFramework\Data\_Sysprep\_YUNA\config.json
+    StackTrace: DeviceManagement.psm1 at DeviceManagement.psm1: line 24 -> App.ps1 at App.ps1: line 65 -> <ScriptBlock> at <No file>
+[2025-07-17T00:53:30.038+02:00] [SUCCESS] [YUNA] [CID:e754b32d] Successfully imported module: DeviceManagement.psm1
+    Context: {"ModulePath":"C:\\Users\\z004ac7v\\SW_ImageCreatorFramework\\Data\\_Sysprep\\_YUNA\\Engine\\DeviceManagement.psm1"}
+[2025-07-17T00:53:30.104+02:00] [SUCCESS] [YUNA] [CID:e754b32d] Successfully imported module: OSSettings.psm1
+    Context: {"ModulePath":"C:\\Users\\z004ac7v\\SW_ImageCreatorFramework\\Data\\_Sysprep\\_YUNA\\Engine\\OSSettings.psm1"}
+[2025-07-17T00:53:30.168+02:00] [SUCCESS] [YUNA] [CID:e754b32d] Successfully imported module: RegistryManagement.psm1
+    Context: {"ModulePath":"C:\\Users\\z004ac7v\\SW_ImageCreatorFramework\\Data\\_Sysprep\\_YUNA\\Engine\\RegistryManagement.psm1"}
+[2025-07-17T00:53:30.179+02:00] [PERFORMANCE] [YUNA] [CID:e754b32d] Performance timer started
+    Context: {"OperationName":"YUNA_Total_Execution"}
+[2025-07-17T00:53:30.204+02:00] [SUCCESS] [YUNA] [CID:e754b32d] Configuration loaded successfully
+    Context: {"Debug":true,"Version":"1.000.38","ConfigPath":"C:\\Users\\z004ac7v\\SW_ImageCreatorFramework\\Data\\_Sysprep\\_YUNA\\Engine\\config.json"}
+[2025-07-17T00:53:30.288+02:00] [INIT] [YUNA] [CID:e754b32d] Initializing YUNA System...
+    Context: {"EngineDirectory":"C:\\Users\\z004ac7v\\SW_ImageCreatorFramework\\Data\\_Sysprep\\_YUNA\\Engine","Version":"1.000.38","ExecutionPolicy":1,"Computer":"DINMS6953300","User":"z004ac7v","StartTime":"2025-07-17 00:53:29","PowerShellVersion":"5.1.26100.4202"}
+[2025-07-17T00:53:34.212+02:00] [PERFORMANCE] [YUNA] [CID:e754b32d] Performance timer started
+    Context: {"OperationName":"Device_Detection"}
+[2025-07-17T00:53:34.247+02:00] [INFO] [YUNA] [CID:e754b32d] Device model detected
+    Context: {"DeviceModel":"MD-57A"}
+[2025-07-17T00:53:34.261+02:00] [PERFORMANCE] [YUNA] [CID:e754b32d] Performance timer completed
+    Context: {"Duration":"00:00:00.0456922","EndTime":{"value":"\/Date(1752706414253)\/","DisplayHint":2,"DateTime":"Thursday, July 17, 2025 12:53:34 AM"},"StartTime":{"value":"\/Date(1752706414211)\/","DisplayHint":2,"DateTime":"Thursday, July 17, 2025 12:53:34 AM"},"OperationName":"Device_Detection","DurationMs":45}
+[2025-07-17T00:53:34.322+02:00] [PERFORMANCE] [YUNA] [CID:e754b32d] Performance timer started
+    Context: {"OperationName":"Device_Config_Load"}
+[2025-07-17T00:53:34.347+02:00] [ERROR] [YUNA] [CID:e754b32d] Device configuration not found - unsupported device
+    Context: {"DeviceFile":"C:\\Users\\z004ac7v\\SW_ImageCreatorFramework\\Data\\_Sysprep\\_YUNA\\Devices\\MD-57A.json","AvailableDevices":["RW-5x8A","xX-39B"],"DeviceModel":"MD-57A"}
+    StackTrace: Write-LogError at Logging.psm1: line 438 -> App.ps1 at App.ps1: line 163 -> <ScriptBlock> at <No file>

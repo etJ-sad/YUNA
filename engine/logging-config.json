@@ -1,0 +1,39 @@
+﻿{
+    "loggingConfig": {
+        "enableDebugLogging": false,
+        "enableVerboseLogging": false,
+        "outputTargets": ["Console", "File"],
+        "logFormat": "Structured",
+        "includeStackTrace": false,
+        "includeSystemInfo": true,
+        "maxLogSizeBytes": 52428800,
+        "maxLogFiles": 10,
+        "bufferLogs": false,
+        "flushInterval": 30,
+        "remoteEndpoint": "",
+        "remoteApiKey": ""
+    },
+    "logLevels": {
+        "development": {
+            "enableDebugLogging": true,
+            "enableVerboseLogging": true,
+            "outputTargets": ["Console", "File"],
+            "logFormat": "Structured",
+            "includeStackTrace": true
+        },
+        "production": {
+            "enableDebugLogging": false,
+            "enableVerboseLogging": false,
+            "outputTargets": ["File", "EventLog"],
+            "logFormat": "Structured",
+            "includeStackTrace": false
+        },
+        "testing": {
+            "enableDebugLogging": true,
+            "enableVerboseLogging": false,
+            "outputTargets": ["Console", "File"],
+            "logFormat": "JSON",
+            "includeStackTrace": true
+        }
+    }
+}

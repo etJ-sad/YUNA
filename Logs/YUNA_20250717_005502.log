@@ -1,0 +1,2 @@
+﻿[2025-07-17T00:55:02.086+02:00] [INIT] [YUNA] [CID:a0f2af77] Logging system initialized
+    Context: {"LogFormat":"Structured","OutputTargets":"File, EventLog","LogVersion":"2.0.0","CorrelationId":"a0f2af77-8dbe-445f-88be-72cdd74d9f36","SessionId":"d42a1086-3815-4c20-8bff-a33eae857fdb"}
