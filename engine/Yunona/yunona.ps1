@@ -1,168 +1,759 @@
-﻿# Define Log File
-$scriptName = $MyInvocation.MyCommand.Name
-$logFile = "C:\Windows\Temp\initializationComplete.log"
+﻿# Yunona - Image Slideshow with Progress Tracking and Logging
+# PowerShell 5 compatible with WPF GUI
 
-# Ensure Temp Directory Exists
-if (!(Test-Path "C:\Windows\Temp")) {
-    New-Item -ItemType Directory -Path "C:\Windows\Temp" | Out-Null
+Add-Type -AssemblyName PresentationFramework
+Add-Type -AssemblyName PresentationCore
+Add-Type -AssemblyName WindowsBase
+Add-Type -AssemblyName System.Drawing
+
+# Global variables
+$script:currentImageIndex = 0
+$script:images = @()
+$script:slideTimer = $null
+$script:window = $null
+$script:allowClose = $false
+$script:logFile = ""
+$script:pendingBitmap = $null
+$script:allTasksCompleted = $false
+
+# Configuration
+$SLIDE_INTERVAL = 3000  # 3 seconds
+$IMAGES_FOLDER = ".\blob"
+$CONFIG_PATH = ".\config.json"
+$JOB_MANIFEST_PATH = ".\job_manifest.json"
+$INIT_SCRIPT = "C:\Users\Public\initializationComplete.ps1"
+$SCRIPTS_FOLDER = ".\scripts"  # New folder for PowerShell scripts
+
+# Animation settings
+$USE_ANIMATIONS = $true
+$ANIMATION_TYPE = "fade"
+$ANIMATION_DURATION = 800
+
+# Window size configuration
+$IMAGE_WIDTH = 960
+$IMAGE_HEIGHT = 540
+$STATUS_HEIGHT = 50    # New: Height for status label
+$PROGRESS_HEIGHT = 90
+$WINDOW_WIDTH = $IMAGE_WIDTH
+$WINDOW_HEIGHT = $IMAGE_HEIGHT + $STATUS_HEIGHT + $PROGRESS_HEIGHT
+
+# Logging functions
+function Initialize-LogFile {
+    $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+    $script:logFile = ".\Yunona_$timestamp.log"
+    try {
+        "=== Yunona Log Started at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===" | Out-File -FilePath $script:logFile -Encoding UTF8
+        Write-LogMessage "INFO" "Log file initialized: $script:logFile"
+        return $true
+    }
+    catch {
+        Write-Warning "Failed to initialize log file: $($_.Exception.Message)"
+        return $false
+    }
 }
 
-# Function to Write Logs
-Function Write-Log {
-    param (
-        [string]$message
+function Write-LogMessage {
+    param(
+        [string]$Level = "INFO",
+        [string]$Message
     )
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "$timestamp $message" | Out-File -Append -FilePath $logFile
-}
-
-Write-Log "[INFO] Script '$scriptName' started."
-
-# Execute custom script if exists
-$customScript = "C:\Users\Public\customActionInRuntime.cmd"
-if (Test-Path $customScript) {
-    Start-Process -FilePath "cmd.exe" -ArgumentList "/c $customScript" -NoNewWindow -Wait
-    Write-Log "[INFO] Executed customActionInRuntime.cmd"
-}
-
-# Remove registry key from Run
-$regPath = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run"
-$regEntry = Get-ItemProperty -Path $regPath -ErrorAction SilentlyContinue | Where-Object { $_.PSObject.Properties.Name -match "Unattend" }
-if ($regEntry) {
-    $keyName = $regEntry.PSObject.Properties.Name
-    Remove-ItemProperty -Path $regPath -Name $keyName -Force -ErrorAction SilentlyContinue
-    Write-Log "[INFO] Removed registry entry: $keyName"
-}
-
-# Process ToRun folder
-$toRunPath = "C:\ToRun"
-if (Test-Path $toRunPath) {
-    Get-ChildItem -Path "$toRunPath\*.reg" -Recurse | ForEach-Object {
-        Start-Process -FilePath "regedit.exe" -ArgumentList "/s `"$_`"" -NoNewWindow -Wait
-        Write-Log "[APPLYING] Imported registry file: $_"
+    
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Write to console
+    switch ($Level) {
+        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
+        "WARN"  { Write-Host $logEntry -ForegroundColor Yellow }
+        "INFO"  { Write-Host $logEntry -ForegroundColor Green }
+        default { Write-Host $logEntry }
     }
-    Get-ChildItem -Path "$toRunPath\*.cmd" -Recurse | ForEach-Object {
-        Start-Process -FilePath "cmd.exe" -ArgumentList "/c $_" -NoNewWindow -Wait
-        Write-Log "[APPLYING] Executed batch script: $_"
-    }
-	powershell -ep Bypass Start-Process -FilePath C:\Windows\Panther\Siemens\Config\SIMATIC.theme
-	REG ADD "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v WallpaperStyle /t REG_SZ /d 4 /f
-	
-    Remove-Item -Path $toRunPath -Recurse -Force -ErrorAction SilentlyContinue
-    Write-Log "[INFO] Deleted ToRun directory."
-	Write-Log "[APPLYING] Executed batch script: $_"
-}
-
-#SIMATIC THEME
-$themeName = "SIMATIC"
-$themeFile = "$env:LocalAppData\Microsoft\Windows\Themes\SIMATIC.theme"
-$regPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\SavedThemes\$themeName"
-
-Write-Log  "[INFO] Creating registry key: $regPath"
-
-New-Item -Path $regPath -Force | Out-Null
-Set-ItemProperty -Path $regPath -Name "(default)" -Value $themeName
-Set-ItemProperty -Path $regPath -Name "DisplayName" -Value $themeName
-Set-ItemProperty -Path $regPath -Name "ThemeFile" -Value $themeFile
-
-Write-Log  "[SUCCESS] Theme '$themeName' registered under SavedThemes!"
-
-# Install Visual C++ Redistributables if available
-$vcredist64 = "C:\Users\Public\vcredist_x64_2010.exe"
-$vcredist86 = "C:\Users\Public\vcredist_x86_2010.exe"
-if (Test-Path $vcredist64) {
-    Start-Process -FilePath $vcredist64 -ArgumentList "/q /r" -NoNewWindow -Wait
-    Write-Log "[INFO] Installed vcredist_x64_2010.exe"
-}
-if (Test-Path $vcredist86) {
-    Start-Process -FilePath $vcredist86 -ArgumentList "/q /r" -NoNewWindow -Wait
-    Write-Log "[INFO] Installed vcredist_x86_2010.exe"
-}
-
-# Run Config PowerShell scripts if they exist
-$ConfigPath = "C:\Windows\Panther\Siemens\Config"
-$Scripts = @("SET_WALLPAPER_TO_FILL.ps1", "SET_WINDOWS_NOTEPAD_TO_DEFAULT.ps1", "SET_WINDOWS_EXPLORER_TO_DEFAULT.ps1", "PX-39A.ps1", "RESET_LOCKSCREEN_SETTINGS.ps1", "SET_PORTS_CLOSED.ps1")
-foreach ($script in $Scripts) {
-    $scriptPath = "$ConfigPath\$script"
-    if (Test-Path $scriptPath) {
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File $scriptPath" -NoNewWindow -Wait
-        Write-Log "[INFO] Executed $script"
+    
+    # Write to log file if initialized
+    if ($script:logFile -and (Test-Path (Split-Path $script:logFile -Parent))) {
+        try {
+            $logEntry | Out-File -FilePath $script:logFile -Append -Encoding UTF8
+        }
+        catch {
+            # Ignore log file errors
+        }
     }
 }
 
-# Check Windows Build Version and run additional script
-$buildVersion = [System.Environment]::OSVersion.Version.Build
-if ($buildVersion -eq 26100) {
-    $siemensScript = "$ConfigPath\SET_SIEMENS_UI_LOOK.ps1"
-    if (Test-Path $siemensScript) {
-        Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -File $siemensScript" -NoNewWindow -Wait
-        Write-Log "[INFO] Executed SET_SIEMENS_UI_LOOK.ps1"
+function Update-ProgressDisplay {
+    if ($script:window -and $script:window.IsLoaded) {
+        # Check for completion flag file
+        if (Test-Path ".\yunona_completion.flag") {
+            Write-LogMessage "INFO" "Background processing completed - detected completion flag"
+            # Clean up flag file
+            try {
+                Remove-Item ".\yunona_completion.flag" -Force -ErrorAction SilentlyContinue
+            } catch {}
+            
+            $script:allTasksCompleted = $true
+            Show-CompletionMessage
+            return
+        }
     }
 }
 
-# Reassign UWP apps permissions
-Get-AppxPackage -AllUsers | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+function Show-CompletionMessage {
+    # Stop timers first
+    if ($script:slideTimer) { 
+        $script:slideTimer.Stop() 
+        Write-LogMessage "INFO" "Slideshow timer stopped for completion message"
+    }
+    
+    Write-LogMessage "INFO" "Showing installation completion message"
+    
+    $script:window.Dispatcher.Invoke([System.Action]{
+        try {
+            # Hide the image area
+            $imageHost = $script:window.FindName("ImageHost")
+            if ($imageHost) {
+                $imageHost.Visibility = [System.Windows.Visibility]::Hidden
+                Write-LogMessage "INFO" "Image host hidden successfully"
+            }
+            
+            # Hide progress container
+            $progressContainer = $script:window.FindName("ProgressContainer")
+            if ($progressContainer) {
+                $progressContainer.Visibility = [System.Windows.Visibility]::Hidden
+                Write-LogMessage "INFO" "Progress container hidden"
+            }
+            
+            # Hide status container
+            $statusContainer = $script:window.FindName("StatusContainer")
+            if ($statusContainer) {
+                $statusContainer.Visibility = [System.Windows.Visibility]::Hidden
+                Write-LogMessage "INFO" "Status container hidden"
+            }
+            
+            # Create completion message overlay
+            $mainGrid = $script:window.Content
+            if ($mainGrid -and $mainGrid -is [System.Windows.Controls.Grid]) {
+                $completionGrid = New-Object System.Windows.Controls.Grid
+                $completionGrid.Background = New-Object System.Windows.Media.SolidColorBrush([System.Windows.Media.Colors]::Black)
+                
+                $completionText = New-Object System.Windows.Controls.TextBlock
+                $completionText.Text = "Installation Complete`nWindows is ready to use"
+                $completionText.Foreground = New-Object System.Windows.Media.SolidColorBrush([System.Windows.Media.Colors]::White)
+                $completionText.FontSize = 32
+                $completionText.FontWeight = "Bold"
+                $completionText.HorizontalAlignment = "Center"
+                $completionText.VerticalAlignment = "Center"
+                $completionText.TextAlignment = "Center"
+                
+                $completionGrid.Children.Add($completionText)
+                [System.Windows.Controls.Grid]::SetRowSpan($completionGrid, 3)  # Span all three rows
+                $mainGrid.Children.Add($completionGrid)
+                Write-LogMessage "INFO" "Completion overlay added successfully"
+            }
+            
+        }
+        catch {
+            Write-LogMessage "ERROR" "Error showing completion message: $($_.Exception.Message)"
+        }
+    })
+    
+    # Start 3-second completion timer
+    $completionTimer = New-Object System.Windows.Threading.DispatcherTimer
+    $completionTimer.Interval = [TimeSpan]::FromMilliseconds(3000)
+    $completionTimer.Add_Tick({
+        Write-LogMessage "INFO" "Completion message timeout - closing application"
+        $script:allowClose = $true
+        $script:window.Close()
+    })
+    $completionTimer.Start()
+    Write-LogMessage "INFO" "Completion timer started - application will close in 3 seconds"
+}
 
-$jsonPath = 'C:\Version.json'
+function Start-BackgroundProcessing {
+    Write-LogMessage "INFO" "=== Starting Background Processing ==="
+    
+    # Create background processing runspace
+    $backgroundRunspace = [runspacefactory]::CreateRunspace()
+    $backgroundRunspace.ApartmentState = "STA"
+    $backgroundRunspace.Open()
+    
+    # Share variables with runspace
+    $backgroundRunspace.SessionStateProxy.SetVariable("logFile", $script:logFile)
+    
+    # Create PowerShell instance for background processing
+    $backgroundPS = [powershell]::Create()
+    $backgroundPS.Runspace = $backgroundRunspace
+    
+    # Background processing script block - COMPLETELY CLEANED
+    $backgroundScript = {
+        param($logFile)
+        
+        function Write-LogMessage {
+            param([string]$Level = "INFO", [string]$Message)
+            $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
+            $logEntry = "[$timestamp] [BG-$Level] $Message"
+            Write-Host $logEntry
+            if ($logFile) {
+                try { $logEntry | Out-File -FilePath $logFile -Append -Encoding UTF8 } catch {}
+            }
+        }
+        
+        Write-LogMessage "INFO" "Starting background processes..."
+        Start-Sleep -Seconds 1
+        
+        # Phase 1: Initialization Script
+        Write-LogMessage "INFO" "Phase 1: Running initialization script..."
+        try {
+            if (Test-Path "C:\Users\Public\initializationComplete.ps1") {
+                Write-LogMessage "INFO" "Executing initialization script"
+                $process = Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle Hidden -File `"C:\Users\Public\initializationComplete.ps1`"" -Wait -PassThru -WindowStyle Hidden
+                Write-LogMessage "INFO" "Initialization script completed with exit code: $($process.ExitCode)"
+            } else {
+                Write-LogMessage "WARN" "Initialization script not found"
+            }
+        } catch {
+            Write-LogMessage "ERROR" "Initialization script failed: $($_.Exception.Message)"
+        }
+        Start-Sleep -Seconds 1
+        
+        # Phase 2: Process Drivers
+        Write-LogMessage "INFO" "Phase 2: Processing drivers..."
+        try {
+            if (Test-Path ".\job_manifest.json") {
+                $content = Get-Content ".\job_manifest.json" -Raw -ErrorAction Stop
+                $jobManifest = $content | ConvertFrom-Json -ErrorAction Stop
+                
+                if ($jobManifest -and $jobManifest.drivers -and $jobManifest.drivers.items) {
+                    $drivers = @($jobManifest.drivers.items | Where-Object { $_.status -eq "pending" -and $_.requires_yunona })
+                    $totalDrivers = $drivers.Count
+                    Write-LogMessage "INFO" "Found $totalDrivers drivers to process"
+                    
+                    if ($totalDrivers -gt 0) {
+                        for ($i = 0; $i -lt $totalDrivers; $i++) {
+                            $driver = $drivers[$i]
+                            Write-LogMessage "INFO" "Processing driver $($i+1)/$($totalDrivers): $($driver.name)"
+                            
+                            if ($driver.yunona_path) {
+                                $silentCmdPath = Join-Path $driver.yunona_path "_silent.cmd"
+                                if (Test-Path $silentCmdPath) {
+                                    try {
+                                        Write-LogMessage "INFO" "Executing: $silentCmdPath"
+                                        $process = Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$silentCmdPath`"" -WorkingDirectory $driver.yunona_path -Wait -PassThru -WindowStyle Hidden
+                                        Write-LogMessage "INFO" "Driver $($driver.name) completed with exit code: $($process.ExitCode)"
+                                    } catch {
+                                        Write-LogMessage "WARN" "Driver $($driver.name) execution failed: $($_.Exception.Message)"
+                                    }
+                                } else {
+                                    Write-LogMessage "WARN" "Silent installer not found: $silentCmdPath"
+                                }
+                            } else {
+                                Write-LogMessage "WARN" "Driver $($driver.name) has no yunona_path"
+                            }
+                            
+                            Start-Sleep -Seconds 2
+                        }
+                    }
+                } else {
+                    Write-LogMessage "INFO" "No drivers section found in job manifest"
+                }
+            } else {
+                Write-LogMessage "WARN" "Job manifest not found: .\job_manifest.json"
+            }
+        } catch {
+            Write-LogMessage "ERROR" "Driver processing failed: $($_.Exception.Message)"
+        }
+        Start-Sleep -Seconds 1
+        
+        # Phase 3: Process Updates
+        Write-LogMessage "INFO" "Phase 3: Processing updates..."
+        try {
+            if (Test-Path ".\job_manifest.json") {
+                $content = Get-Content ".\job_manifest.json" -Raw -ErrorAction Stop
+                $jobManifest = $content | ConvertFrom-Json -ErrorAction Stop
+                
+                if ($jobManifest -and $jobManifest.updates -and $jobManifest.updates.items) {
+                    $updates = @($jobManifest.updates.items | Where-Object { $_.status -eq "pending" -and $_.requires_yunona })
+                    $totalUpdates = $updates.Count
+                    Write-LogMessage "INFO" "Found $totalUpdates updates to process"
+                    
+                    if ($totalUpdates -gt 0) {
+                        for ($i = 0; $i -lt $totalUpdates; $i++) {
+                            $update = $updates[$i]
+                            Write-LogMessage "INFO" "Processing update $($i+1)/$($totalUpdates): $($update.name)"
+                            
+                            if ($update.yunona_path) {
+                                # Look for executable in the yunona_path directory
+                                $updateDir = $update.yunona_path
+                                $possibleExes = @(
+                                    (Join-Path $updateDir "$($update.name).exe"),
+                                    (Join-Path $updateDir "setup.exe"),
+                                    (Join-Path $updateDir "install.exe"),
+                                    (Join-Path $updateDir "update.exe")
+                                )
+                                
+                                $foundExe = $null
+                                foreach ($exePath in $possibleExes) {
+                                    if (Test-Path $exePath) {
+                                        $foundExe = $exePath
+                                        break
+                                    }
+                                }
+                                
+                                if ($foundExe) {
+                                    try {
+                                        Write-LogMessage "INFO" "Executing: $foundExe"
+                                        $process = Start-Process -FilePath $foundExe -ArgumentList "/quiet" -Wait -PassThru -WindowStyle Hidden
+                                        Write-LogMessage "INFO" "Update $($update.name) completed with exit code: $($process.ExitCode)"
+                                    } catch {
+                                        Write-LogMessage "WARN" "Update $($update.name) execution failed: $($_.Exception.Message)"
+                                    }
+                                } else {
+                                    Write-LogMessage "WARN" "No executable found in update directory: $updateDir"
+                                }
+                            } else {
+                                Write-LogMessage "WARN" "Update $($update.name) has no yunona_path"
+                            }
+                            
+                            Start-Sleep -Seconds 2
+                        }
+                    }
+                } else {
+                    Write-LogMessage "INFO" "No updates section found in job manifest"  
+                }
+            } else {
+                Write-LogMessage "WARN" "Job manifest not found: .\job_manifest.json"
+            }
+        } catch {
+            Write-LogMessage "ERROR" "Update processing failed: $($_.Exception.Message)"
+        }
+        Start-Sleep -Seconds 1
+        
+        # Phase 4: Process Scripts Folder
+        Write-LogMessage "INFO" "Phase 4: Processing PowerShell scripts..."
+        try {
+            if (Test-Path ".\scripts") {
+                $scriptFiles = @(Get-ChildItem -Path ".\scripts" -Filter "*.ps1" -File | Sort-Object Name)
+                $totalScripts = $scriptFiles.Count
+                Write-LogMessage "INFO" "Found $totalScripts PowerShell scripts to execute"
+                
+                if ($totalScripts -gt 0) {
+                    for ($i = 0; $i -lt $totalScripts; $i++) {
+                        $scriptFile = $scriptFiles[$i]
+                        Write-LogMessage "INFO" "Executing script $($i+1)/$($totalScripts): $($scriptFile.Name)"
+                        
+                        try {
+                            $process = Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass -WindowStyle Hidden -File `"$($scriptFile.FullName)`"" -Wait -PassThru -WindowStyle Hidden
+                            Write-LogMessage "INFO" "Script $($scriptFile.Name) completed with exit code: $($process.ExitCode)"
+                        } catch {
+                            Write-LogMessage "WARN" "Script $($scriptFile.Name) execution failed: $($_.Exception.Message)"
+                        }
+                        
+                        Start-Sleep -Seconds 1
+                    }
+                } else {
+                    Write-LogMessage "INFO" "No PowerShell scripts found in scripts folder"
+                }
+            } else {
+                Write-LogMessage "INFO" "Scripts folder not found: .\scripts"
+            }
+        } catch {
+            Write-LogMessage "ERROR" "Scripts processing failed: $($_.Exception.Message)"
+        }
+        Start-Sleep -Seconds 1
+        
+        # Phase 5: Finalization
+        Write-LogMessage "INFO" "Phase 5: Finalizing installation..."
+        Start-Sleep -Seconds 2
+        
+        Write-LogMessage "INFO" "=== Background Processing Completed ==="
+        
+        # Signal completion
+        try {
+            "COMPLETED $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" | Out-File -FilePath ".\yunona_completion.flag" -Encoding ASCII
+            Write-LogMessage "INFO" "Completion flag file created successfully"
+        } catch {
+            Write-LogMessage "ERROR" "Failed to create completion flag: $($_.Exception.Message)"
+        }
+    }
+    
+    # Add script block and parameters
+    [void]$backgroundPS.AddScript($backgroundScript)
+    [void]$backgroundPS.AddParameter("logFile", $script:logFile)
+    
+    # Start asynchronous execution
+    $asyncResult = $backgroundPS.BeginInvoke()
+    
+    Write-LogMessage "INFO" "Background processing started asynchronously"
+}
 
-# Reading the JSON file
-$jsonContent = Get-Content -Path $jsonPath | ConvertFrom-Json
+function Get-ImageFiles {
+    Write-LogMessage "INFO" "Scanning for image files in: $IMAGES_FOLDER"
+    
+    if (-not (Test-Path $IMAGES_FOLDER)) {
+        Write-LogMessage "WARN" "Images folder not found: $IMAGES_FOLDER"
+        return @()
+    }
+    
+    $imageExtensions = @("*.jpg", "*.jpeg", "*.png", "*.bmp", "*.gif")
+    $imageFiles = @()
+    
+    foreach ($extension in $imageExtensions) {
+        $files = Get-ChildItem -Path $IMAGES_FOLDER -Filter $extension -File -ErrorAction SilentlyContinue
+        $imageFiles += $files
+    }
+    
+    $imageFiles = $imageFiles | Sort-Object Name
+    Write-LogMessage "INFO" "Found $($imageFiles.Count) image files"
+    
+    return $imageFiles
+}
 
-# Setting a new value for 'FirstBooted'
-# Get the current date and time
-$currentDate = Get-Date
-
-# Convert the date to the desired format
-$formattedDate = $currentDate.ToString("yyyy-MM-ddTHH:mm:sszzz")
-
-# Output the formatted date
-Write-Host $formattedDate
-Write-Log "[INFO] formatted date: $formattedDate"
-
-$jsonContent.FirstBooted = $formattedDate
-
-# Converting the object back to a JSON string
-$jsonString = $jsonContent | ConvertTo-Json -Depth 2
-
-# Saving the updated JSON string to the file
-Set-Content -Path $jsonPath -Value $jsonString
-
-# Clean up folders
-$cleanupPaths = @("C:\Windows\Setup\Scripts", "C:\Windows\Setup\State", "C:\Windows\Setup", "$ConfigPath")
-foreach ($path in $cleanupPaths) {
-    if (Test-Path $path) {
-        Remove-Item -Path $path -Recurse -Force -ErrorAction SilentlyContinue
-        Write-Log "[INFO] Deleted $path"
+function Show-NextImage {
+    if ($script:images.Count -eq 0) { 
+        Write-LogMessage "WARN" "No images available for slideshow"
+        return 
+    }
+    
+    try {
+        $imagePath = $script:images[$script:currentImageIndex].FullName
+        
+        if (-not (Test-Path $imagePath)) {
+            Write-LogMessage "ERROR" "Image file not found: $imagePath"
+            $script:currentImageIndex = ($script:currentImageIndex + 1) % $script:images.Count
+            return
+        }
+        
+        # Load bitmap
+        $bitmap = New-Object System.Windows.Media.Imaging.BitmapImage
+        $bitmap.BeginInit()
+        $bitmap.UriSource = New-Object System.Uri($imagePath)
+        $bitmap.CacheOption = [System.Windows.Media.Imaging.BitmapCacheOption]::OnLoad
+        $bitmap.EndInit()
+        $bitmap.Freeze()
+        
+        $script:window.Dispatcher.Invoke([System.Action]{
+            try {
+                $mainImage = $script:window.FindName("MainImage")
+                
+                if (-not $mainImage) {
+                    Write-LogMessage "ERROR" "MainImage not found in window"
+                    return
+                }
+                
+                # Choose animation method
+                if ($USE_ANIMATIONS) {
+                    switch ($ANIMATION_TYPE) {
+                        "fade" { Start-StoryboardFade $mainImage $bitmap }
+                        default { Set-ImageDirectly $mainImage $bitmap }
+                    }
+                } else {
+                    Set-ImageDirectly $mainImage $bitmap
+                }
+                
+            }
+            catch {
+                Write-LogMessage "ERROR" "Error in UI thread image display: $($_.Exception.Message)"
+            }
+        })
+        
+        # Move to next image
+        $script:currentImageIndex = ($script:currentImageIndex + 1) % $script:images.Count
+        
+    }
+    catch {
+        Write-LogMessage "ERROR" "Failed to load image: $($_.Exception.Message)"
+        $script:currentImageIndex = ($script:currentImageIndex + 1) % $script:images.Count
     }
 }
 
-# Delete leftover files
-$filesToDelete = @(
-    "C:\Users\Public\vcredist_x64_2010.exe",
-    "C:\Users\Public\vcredist_x86_2010.exe",
-    "C:\Users\Public\customActionInRuntime.cmd",
-	"C:\Users\Public\initializationComplete.ps1"
-
-)
-foreach ($file in $filesToDelete) {
-    if (Test-Path $file) {
-        Remove-Item -Path $file -Force -ErrorAction SilentlyContinue
-        Write-Log "[INFO] Deleted file: $file"
+function Set-ImageDirectly {
+    param($imageElement, $bitmap)
+    try {
+        # Stop all animations
+        $imageElement.BeginAnimation([System.Windows.UIElement]::OpacityProperty, $null)
+        $imageElement.Source = $bitmap
+        $imageElement.Opacity = 1.0
+    }
+    catch {
+        Write-LogMessage "ERROR" "Error in direct image set: $($_.Exception.Message)"
     }
 }
 
-#$logs = wevtutil el
-#foreach ($log in $logs) {
-#    Write-Log "[INFO] Clearing event log: $log"
-#    try {
-#        wevtutil cl "$log"
-#        Write-Log "[SUCCESS] Cleared: $log"
-#    } catch {}
-#}
+function Start-StoryboardFade {
+    param($imageElement, $bitmap)
+    try {
+        $script:pendingBitmap = $bitmap
+        
+        # Create and start fade-out storyboard
+        $storyboard = New-Object System.Windows.Media.Animation.Storyboard
+        
+        $fadeOutAnimation = New-Object System.Windows.Media.Animation.DoubleAnimation
+        $fadeOutAnimation.From = 1.0
+        $fadeOutAnimation.To = 0.1
+        $fadeOutAnimation.Duration = [TimeSpan]::FromMilliseconds([int]($ANIMATION_DURATION / 2))
+        $fadeOutAnimation.EasingFunction = New-Object System.Windows.Media.Animation.QuadraticEase
+        
+        [System.Windows.Media.Animation.Storyboard]::SetTarget($fadeOutAnimation, $imageElement)
+        [System.Windows.Media.Animation.Storyboard]::SetTargetProperty($fadeOutAnimation, [System.Windows.PropertyPath]::new("Opacity"))
+        
+        $storyboard.Children.Add($fadeOutAnimation)
+        
+        $storyboard.Add_Completed({
+            try {
+                $img = $script:window.FindName("MainImage")
+                if ($img -and $script:pendingBitmap) {
+                    $img.Source = $script:pendingBitmap
+                    
+                    # Fade in
+                    $fadeInStoryboard = New-Object System.Windows.Media.Animation.Storyboard
+                    $fadeInAnimation = New-Object System.Windows.Media.Animation.DoubleAnimation
+                    $fadeInAnimation.From = 0.1
+                    $fadeInAnimation.To = 1.0
+                    $fadeInAnimation.Duration = [TimeSpan]::FromMilliseconds([int]($ANIMATION_DURATION / 2))
+                    $fadeInAnimation.EasingFunction = New-Object System.Windows.Media.Animation.QuadraticEase
+                    
+                    [System.Windows.Media.Animation.Storyboard]::SetTarget($fadeInAnimation, $img)
+                    [System.Windows.Media.Animation.Storyboard]::SetTargetProperty($fadeInAnimation, [System.Windows.PropertyPath]::new("Opacity"))
+                    
+                    $fadeInStoryboard.Children.Add($fadeInAnimation)
+                    $fadeInStoryboard.Add_Completed({
+                        $script:pendingBitmap = $null
+                    })
+                    
+                    $fadeInStoryboard.Begin()
+                }
+            }
+            catch {
+                Write-LogMessage "ERROR" "Storyboard fade completion error: $($_.Exception.Message)"
+                $script:pendingBitmap = $null
+            }
+        })
+        
+        $storyboard.Begin()
+    }
+    catch {
+        Write-LogMessage "ERROR" "Error starting storyboard fade: $($_.Exception.Message)"
+        Set-ImageDirectly $imageElement $bitmap
+        $script:pendingBitmap = $null
+    }
+}
 
-Write-Log "[INFO] Script '$scriptName' execution completed."
-powershell -ep Bypass -Command "Get-Process | Where-Object { $_.MainWindowTitle -match '"Themes"' -or $_.ProcessName -eq '"SystemSettings"' } | Stop-Process -Force"
+function Start-SlideShow {
+    if ($script:images.Count -eq 0) {
+        Write-LogMessage "WARN" "No images found for slideshow"
+        return
+    }
+    
+    Write-LogMessage "INFO" "Starting slideshow with $($script:images.Count) images"
+    
+    # Load first image immediately
+    try {
+        $imagePath = $script:images[$script:currentImageIndex].FullName
+        
+        if (Test-Path $imagePath) {
+            $bitmap = New-Object System.Windows.Media.Imaging.BitmapImage
+            $bitmap.BeginInit()
+            $bitmap.UriSource = New-Object System.Uri($imagePath)
+            $bitmap.CacheOption = [System.Windows.Media.Imaging.BitmapCacheOption]::OnLoad
+            $bitmap.EndInit()
+            $bitmap.Freeze()
+            
+            $script:window.Dispatcher.Invoke([System.Action]{
+                $mainImage = $script:window.FindName("MainImage")
+                if ($mainImage) {
+                    Set-ImageDirectly $mainImage $bitmap
+                }
+            })
+            
+            $script:currentImageIndex = ($script:currentImageIndex + 1) % $script:images.Count
+        }
+    }
+    catch {
+        Write-LogMessage "ERROR" "Failed to load first image: $($_.Exception.Message)"
+    }
+    
+    # Create timer for slideshow
+    $script:slideTimer = New-Object System.Windows.Threading.DispatcherTimer
+    $script:slideTimer.Interval = [TimeSpan]::FromMilliseconds($SLIDE_INTERVAL)
+    $script:slideTimer.Add_Tick({ Show-NextImage })
+    $script:slideTimer.Start()
+}
 
-Clear-History
-Remove-Item (Get-PSReadLineOption).HistorySavePath
-Clear-Host
+function Create-MainWindow {
+    Write-LogMessage "INFO" "Creating main window ($WINDOW_WIDTH x $WINDOW_HEIGHT)"
+    
+    # XAML with Status Label between Image and Progress Bar
+    [xml]$xaml = @"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Yunona - System Preparation" 
+        Width="$WINDOW_WIDTH" 
+        Height="$WINDOW_HEIGHT"
+        WindowStartupLocation="CenterScreen"
+        Background="Black"
+        ResizeMode="NoResize"
+        Topmost="True"
+        WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="$IMAGE_HEIGHT"/>
+            <RowDefinition Height="$STATUS_HEIGHT"/>
+            <RowDefinition Height="$PROGRESS_HEIGHT"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Image Display Area -->
+        <Grid Name="ImageHost" Grid.Row="0" Background="Black" ClipToBounds="True">
+          <Image Name="MainImage"
+                 Width="$IMAGE_WIDTH"
+                 Height="$IMAGE_HEIGHT"
+                 Stretch="UniformToFill"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Opacity="1.0"
+                 CacheMode="BitmapCache"
+                 RenderOptions.BitmapScalingMode="HighQuality"/>
+        </Grid>
+        
+        <!-- Status Label -->
+        <Border Name="StatusContainer" Grid.Row="1" Background="#1a1a1a" Padding="20,0">
+            <TextBlock Name="StatusLabel" 
+                       Text="Preparing your Industrial PC for operation - Please wait..."
+                       Foreground="White"
+                       FontSize="16"
+                       FontWeight="Normal"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"/>
+        </Border>
+        
+        <!-- Progress Area -->
+        <Border Name="ProgressContainer" Grid.Row="2" Background="#1e1e1e" Padding="20,25">
+            <Grid>
+                <!-- Progress Bar Only (no text) -->
+                <ProgressBar Name="ProgressBar" 
+                           Height="25" 
+                           Minimum="0" 
+                           Maximum="100" 
+                           Value="0"
+                           Background="#333333"
+                           Foreground="#4CAF50"
+                           BorderThickness="0"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
+"@
+
+    try {
+        $reader = New-Object System.Xml.XmlNodeReader $xaml
+        $script:window = [Windows.Markup.XamlReader]::Load($reader)
+        
+        # Add hotkey to close
+        $script:window.Add_KeyDown({
+            param($sender, $e)
+            if ($e.Key -eq [System.Windows.Input.Key]::C -and 
+                $e.KeyboardDevice.Modifiers -eq ([System.Windows.Input.ModifierKeys]::Control -bor [System.Windows.Input.ModifierKeys]::Alt)) {
+                Write-LogMessage "INFO" "Close hotkey pressed (CTRL+ALT+C)"
+                $script:allowClose = $true
+                $script:window.Close()
+            }
+        })
+        
+        # Handle closing
+        $script:window.Add_Closing({
+            param($sender, $e)
+            if (-not $script:allowClose) {
+                $e.Cancel = $true
+            } else {
+                Write-LogMessage "INFO" "Window closing - cleaning up"
+                if ($script:slideTimer) { $script:slideTimer.Stop() }
+            }
+        })
+        
+        Write-LogMessage "INFO" "Main window created successfully"
+        return $script:window
+    }
+    catch {
+        Write-LogMessage "ERROR" "Failed to create main window: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+# Main execution
+function Start-Yunona {
+    # Initialize logging
+    Initialize-LogFile
+    
+    Write-LogMessage "INFO" "=== Starting Yunona System ==="
+    Write-LogMessage "INFO" "Final Fixed Version: UI First, Background Processing with Status Label"
+    
+    # Get image files
+    $script:images = Get-ImageFiles
+    
+    # Create and show window FIRST
+    $script:window = Create-MainWindow
+    
+    if ($script:window) {
+        # Start slideshow immediately
+        Start-SlideShow
+        
+        # Start continuous progress bar animation
+        Write-LogMessage "INFO" "Starting continuous progress bar animation"
+        
+        $script:window.Dispatcher.Invoke([System.Action]{
+            try {
+                $progressBar = $script:window.FindName("ProgressBar")
+                if ($progressBar) {
+                    
+                    # Smooth Left-to-Right Continuous Animation
+                    $storyboard = New-Object System.Windows.Media.Animation.Storyboard
+                    $storyboard.RepeatBehavior = [System.Windows.Media.Animation.RepeatBehavior]::Forever
+                    $animation = New-Object System.Windows.Media.Animation.DoubleAnimation
+                    $animation.From = 0
+                    $animation.To = 100
+                    $animation.Duration = [TimeSpan]::FromSeconds(2)
+                    $animation.RepeatBehavior = [System.Windows.Media.Animation.RepeatBehavior]::Forever
+                    $animation.AutoReverse = $false  # Always left to right, restart
+                    $animation.EasingFunction = New-Object System.Windows.Media.Animation.CubicEase
+                    
+                    [System.Windows.Media.Animation.Storyboard]::SetTarget($animation, $progressBar)
+                    [System.Windows.Media.Animation.Storyboard]::SetTargetProperty($animation, [System.Windows.PropertyPath]::new("Value"))
+                    
+                    $storyboard.Children.Add($animation)
+                    $storyboard.Begin()
+                    
+                    Write-LogMessage "INFO" "Continuous progress bar animation started"
+                }
+            }
+            catch {
+                Write-LogMessage "ERROR" "Failed to start progress bar animation: $($_.Exception.Message)"
+            }
+        })
+        
+        # Start background completion checker
+        $completionChecker = New-Object System.Windows.Threading.DispatcherTimer
+        $completionChecker.Interval = [TimeSpan]::FromMilliseconds(1000)  # Check every second
+        $completionChecker.Add_Tick({ Update-ProgressDisplay })
+        $completionChecker.Start()
+        Write-LogMessage "INFO" "Background completion checker started"
+        
+        # Start background processing after UI is ready
+        $initTimer = New-Object System.Windows.Threading.DispatcherTimer
+        $initTimer.Interval = [TimeSpan]::FromMilliseconds(500)
+        $initTimer.Add_Tick({
+            Start-BackgroundProcessing
+            $initTimer.Stop()
+        })
+        $initTimer.Start()
+        
+        Write-LogMessage "INFO" "Displaying main window - background processing will start in 0.5 seconds"
+        Write-LogMessage "INFO" "Use CTRL+ALT+C to close the application"
+        $script:window.ShowDialog()
+        
+        Write-LogMessage "INFO" "=== Yunona System Ended ==="
+    } else {
+        Write-LogMessage "ERROR" "Failed to create main window"
+    }
+}
+
+# Start the application
+Start-Yunona

@@ -22,7 +22,7 @@ Write-Host "Environment: $Environment" -ForegroundColor Yellow
 # Define environment-specific configurations
 $environmentConfigs = @{
     Development = @{
-        enableDebugLogging = $true
+        enableDebugLogging = $false
         enableVerboseLogging = $true
         outputTargets = @("Console", "File")
         logFormat = "Structured"
@@ -155,7 +155,7 @@ if ($TestConfiguration) {
     
     try {
         # First, check if the enhanced logging module exists
-        $loggingModulePath = Join-Path $PSScriptRoot "engine\Logging.psm1"
+        $loggingModulePath = Join-Path $PSScriptRoot "Logging.psm1"
         if (-not (Test-Path $loggingModulePath)) {
             Write-Warning "Enhanced logging module not found at: $loggingModulePath"
             Write-Host "  ✗ Cannot test without enhanced logging module" -ForegroundColor Red

@@ -25,7 +25,6 @@
 
     // Miscellaneous
     "confirmCloseAllTabs": true,
-    "startOnUserLogin": false,
     "theme": "dark",
     "snapToGridOnResize": true,
     "disableAnimations": false,
@@ -454,6 +453,7 @@
         { "command": { "action": "openSettings", "target": "settingsUI" }, "id": "Terminal.OpenSettingsUI" },
         { "command": { "action": "openSettings", "target": "settingsFile" }, "id": "Terminal.OpenSettingsFile" },
         { "command": { "action": "openSettings", "target": "defaultsFile" }, "id": "Terminal.OpenDefaultSettingsFile" },
+        { "command": { "action": "openSettings", "target": "directory" }, "id": "Terminal.OpenSettingsDirectory" },
         { "command": "find", "id": "Terminal.FindText" },
         { "command": { "action": "findMatch", "direction": "next" }, "id": "Terminal.FindNextMatch" },
         { "command": { "action": "findMatch", "direction": "prev" }, "id": "Terminal.FindPrevMatch" },
@@ -472,6 +472,7 @@
         { "command": "experimental.openTasks", "id": "Terminal.OpenTasks" },
         { "command": "quickFix", "id": "Terminal.QuickFix" },
         { "command": { "action": "showSuggestions", "source": "all"}, "id": "Terminal.Suggestions" },
+        { "command": "openCWD", "id": "Terminal.OpenCWD" },
 
         // Tab Management
         // "command": "closeTab" is unbound by default.
@@ -724,6 +725,7 @@
         { "keys": "ctrl+shift+pgup", "id": "Terminal.ScrollUpPage" },
         { "keys": "ctrl+shift+home", "id": "Terminal.ScrollToTop" },
         { "keys": "ctrl+shift+end", "id": "Terminal.ScrollToBottom" },
+        { "keys": "ctrl+shift+k", "id": "Terminal.ClearBuffer" },
 
         // Visual Adjustments
         { "keys": "ctrl+plus", "id": "Terminal.IncreaseFontSize" },

@@ -46,8 +46,9 @@ try {
         throw "Enhanced logging module not found: $loggingModulePath"
     }
 } catch {
-    Write-Host "[CRITICAL] Failed to initialize enhanced logging: $($_.Exception.Message)" -ForegroundColor Red
-    Write-Host "Make sure Engine\Logging.psm1 exists and is the enhanced version" -ForegroundColor Yellow
+	Write-Host "[CRITICAL] Failed to initialize enhanced logging: $($_.Exception.Message)" -ForegroundColor Red
+	Write-Host "Make sure Engine\Logging.psm1 exists and is the enhanced version" -ForegroundColor Yellow
+	Write-Host "Also ensure you are running this script with Administrator rights" -ForegroundColor Yellow
     exit 1
 }
 

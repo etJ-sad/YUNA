@@ -1,39 +1,78 @@
 ﻿{
-    "loggingConfig": {
-        "enableDebugLogging": false,
-        "enableVerboseLogging": false,
-        "outputTargets": ["Console", "File"],
-        "logFormat": "Structured",
-        "includeStackTrace": false,
-        "includeSystemInfo": true,
-        "maxLogSizeBytes": 52428800,
-        "maxLogFiles": 10,
-        "bufferLogs": false,
-        "flushInterval": 30,
-        "remoteEndpoint": "",
-        "remoteApiKey": ""
-    },
-    "logLevels": {
-        "development": {
-            "enableDebugLogging": true,
-            "enableVerboseLogging": true,
-            "outputTargets": ["Console", "File"],
-            "logFormat": "Structured",
-            "includeStackTrace": true
-        },
-        "production": {
-            "enableDebugLogging": false,
-            "enableVerboseLogging": false,
-            "outputTargets": ["File", "EventLog"],
-            "logFormat": "Structured",
-            "includeStackTrace": false
-        },
-        "testing": {
-            "enableDebugLogging": true,
-            "enableVerboseLogging": false,
-            "outputTargets": ["Console", "File"],
-            "logFormat": "JSON",
-            "includeStackTrace": true
-        }
-    }
+    "loggingConfig":  {
+                          "remoteEndpoint":  "",
+                          "maxLogFiles":  20,
+                          "enableDebugLogging":  false,
+                          "flushInterval":  30,
+                          "logFormat":  "Structured",
+                          "bufferLogs":  false,
+                          "remoteApiKey":  "",
+                          "includeStackTrace":  false,
+                          "enableVerboseLogging":  false,
+                          "includeSystemInfo":  false,
+                          "maxLogSizeBytes":  104857600,
+                          "outputTargets":  [
+                                                "File",
+                                                "EventLog"
+                                            ]
+                      },
+    "logLevels":  {
+                      "Testing":  {
+                                      "maxLogSizeBytes":  52428800,
+                                      "enableDebugLogging":  true,
+                                      "includeSystemInfo":  true,
+                                      "maxLogFiles":  10,
+                                      "description":  "Detailed logging for testing scenarios",
+                                      "logFormat":  "Structured",
+                                      "outputTargets":  [
+                                                            "Console",
+                                                            "File"
+                                                        ],
+                                      "includeStackTrace":  true,
+                                      "enableVerboseLogging":  false
+                                  },
+                      "Production":  {
+                                         "maxLogSizeBytes":  104857600,
+                                         "enableDebugLogging":  false,
+                                         "includeSystemInfo":  false,
+                                         "maxLogFiles":  20,
+                                         "description":  "Optimized logging for production deployment",
+                                         "logFormat":  "Structured",
+                                         "outputTargets":  [
+                                                               "File",
+                                                               "EventLog"
+                                                           ],
+                                         "includeStackTrace":  false,
+                                         "enableVerboseLogging":  false
+                                     },
+                      "Development":  {
+                                          "maxLogSizeBytes":  10485760,
+                                          "enableDebugLogging":  false,
+                                          "includeSystemInfo":  true,
+                                          "maxLogFiles":  5,
+                                          "description":  "Full logging for development and debugging",
+                                          "logFormat":  "Structured",
+                                          "outputTargets":  [
+                                                                "Console",
+                                                                "File"
+                                                            ],
+                                          "includeStackTrace":  true,
+                                          "enableVerboseLogging":  true
+                                      },
+                      "Debug":  {
+                                    "maxLogSizeBytes":  5242880,
+                                    "enableDebugLogging":  true,
+                                    "includeSystemInfo":  true,
+                                    "maxLogFiles":  3,
+                                    "description":  "Maximum detail logging for troubleshooting",
+                                    "logFormat":  "JSON",
+                                    "outputTargets":  [
+                                                          "Console",
+                                                          "File"
+                                                      ],
+                                    "bufferLogs":  false,
+                                    "includeStackTrace":  true,
+                                    "enableVerboseLogging":  true
+                                }
+                  }
 }

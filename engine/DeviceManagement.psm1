@@ -9,7 +9,7 @@ $DeviceManagement = 1.0.0
 $rootPath = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 
 # Define the path to config.json
-$modelMappingPath = "$rootPath\config.json"
+$modelMappingPath = "$rootPath\Engine\config.json"
 
 # Load model mapping from JSON
 try {
