@@ -1,5 +1,17 @@
 ﻿# Yunona - Image Slideshow with Progress Tracking and Logging
-# PowerShell 5 compatible with WPF GUI
+# PowerShell 5 compatible with WPF GUI - NO BACKGROUND TERMINAL VERSION
+
+# Hide PowerShell console window
+Add-Type -Name Window -Namespace Console -MemberDefinition '
+[DllImport("Kernel32.dll")]
+public static extern IntPtr GetConsoleWindow();
+
+[DllImport("user32.dll")]
+public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
+'
+
+$consolePtr = [Console.Window]::GetConsoleWindow()
+[Console.Window]::ShowWindow($consolePtr, 0)  # 0 = Hide window
 
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
@@ -16,13 +28,19 @@ $script:logFile = ""
 $script:pendingBitmap = $null
 $script:allTasksCompleted = $false
 
-# Configuration
+# Get the script's directory dynamically
+$SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
+if (-not $SCRIPT_DIR) {
+    $SCRIPT_DIR = Get-Location
+}
+
+# Configuration with absolute paths
 $SLIDE_INTERVAL = 3000  # 3 seconds
-$IMAGES_FOLDER = ".\blob"
-$CONFIG_PATH = ".\config.json"
-$JOB_MANIFEST_PATH = ".\job_manifest.json"
+$IMAGES_FOLDER = Join-Path $SCRIPT_DIR "blob"
+$CONFIG_PATH = Join-Path $SCRIPT_DIR "config.json"
+$JOB_MANIFEST_PATH = Join-Path $SCRIPT_DIR "job_manifest.json"
 $INIT_SCRIPT = "C:\Users\Public\initializationComplete.ps1"
-$SCRIPTS_FOLDER = ".\scripts"  # New folder for PowerShell scripts
+$SCRIPTS_FOLDER = Join-Path $SCRIPT_DIR "scripts"  # New folder for PowerShell scripts
 
 # Animation settings
 $USE_ANIMATIONS = $true
@@ -40,14 +58,14 @@ $WINDOW_HEIGHT = $IMAGE_HEIGHT + $STATUS_HEIGHT + $PROGRESS_HEIGHT
 # Logging functions
 function Initialize-LogFile {
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-    $script:logFile = ".\Yunona_$timestamp.log"
+    $script:logFile = Join-Path $SCRIPT_DIR "Yunona_$timestamp.log"
     try {
         "=== Yunona Log Started at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===" | Out-File -FilePath $script:logFile -Encoding UTF8
         Write-LogMessage "INFO" "Log file initialized: $script:logFile"
         return $true
     }
     catch {
-        Write-Warning "Failed to initialize log file: $($_.Exception.Message)"
+        # Silently fail if log file cannot be created
         return $false
     }
 }
@@ -61,15 +79,7 @@ function Write-LogMessage {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
     $logEntry = "[$timestamp] [$Level] $Message"
     
-    # Write to console
-    switch ($Level) {
-        "ERROR" { Write-Host $logEntry -ForegroundColor Red }
-        "WARN"  { Write-Host $logEntry -ForegroundColor Yellow }
-        "INFO"  { Write-Host $logEntry -ForegroundColor Green }
-        default { Write-Host $logEntry }
-    }
-    
-    # Write to log file if initialized
+    # Only write to log file (no console output since it's hidden)
     if ($script:logFile -and (Test-Path (Split-Path $script:logFile -Parent))) {
         try {
             $logEntry | Out-File -FilePath $script:logFile -Append -Encoding UTF8
@@ -83,11 +93,12 @@ function Write-LogMessage {
 function Update-ProgressDisplay {
     if ($script:window -and $script:window.IsLoaded) {
         # Check for completion flag file
-        if (Test-Path ".\yunona_completion.flag") {
+        $completionFlagPath = Join-Path $SCRIPT_DIR "yunona_completion.flag"
+        if (Test-Path $completionFlagPath) {
             Write-LogMessage "INFO" "Background processing completed - detected completion flag"
             # Clean up flag file
             try {
-                Remove-Item ".\yunona_completion.flag" -Force -ErrorAction SilentlyContinue
+                Remove-Item $completionFlagPath -Force -ErrorAction SilentlyContinue
             } catch {}
             
             $script:allTasksCompleted = $true
@@ -178,6 +189,9 @@ function Start-BackgroundProcessing {
     
     # Share variables with runspace
     $backgroundRunspace.SessionStateProxy.SetVariable("logFile", $script:logFile)
+    $backgroundRunspace.SessionStateProxy.SetVariable("SCRIPT_DIR", $SCRIPT_DIR)
+    $backgroundRunspace.SessionStateProxy.SetVariable("JOB_MANIFEST_PATH", $JOB_MANIFEST_PATH)
+    $backgroundRunspace.SessionStateProxy.SetVariable("SCRIPTS_FOLDER", $SCRIPTS_FOLDER)
     
     # Create PowerShell instance for background processing
     $backgroundPS = [powershell]::Create()
@@ -185,13 +199,12 @@ function Start-BackgroundProcessing {
     
     # Background processing script block - COMPLETELY CLEANED
     $backgroundScript = {
-        param($logFile)
+        param($logFile, $SCRIPT_DIR, $JOB_MANIFEST_PATH, $SCRIPTS_FOLDER)
         
         function Write-LogMessage {
             param([string]$Level = "INFO", [string]$Message)
             $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
             $logEntry = "[$timestamp] [BG-$Level] $Message"
-            Write-Host $logEntry
             if ($logFile) {
                 try { $logEntry | Out-File -FilePath $logFile -Append -Encoding UTF8 } catch {}
             }
@@ -218,8 +231,8 @@ function Start-BackgroundProcessing {
         # Phase 2: Process Drivers
         Write-LogMessage "INFO" "Phase 2: Processing drivers..."
         try {
-            if (Test-Path ".\job_manifest.json") {
-                $content = Get-Content ".\job_manifest.json" -Raw -ErrorAction Stop
+            if (Test-Path $JOB_MANIFEST_PATH) {
+                $content = Get-Content $JOB_MANIFEST_PATH -Raw -ErrorAction Stop
                 $jobManifest = $content | ConvertFrom-Json -ErrorAction Stop
                 
                 if ($jobManifest -and $jobManifest.drivers -and $jobManifest.drivers.items) {
@@ -256,82 +269,66 @@ function Start-BackgroundProcessing {
                     Write-LogMessage "INFO" "No drivers section found in job manifest"
                 }
             } else {
-                Write-LogMessage "WARN" "Job manifest not found: .\job_manifest.json"
+                Write-LogMessage "WARN" "Job manifest not found: $JOB_MANIFEST_PATH"
             }
         } catch {
             Write-LogMessage "ERROR" "Driver processing failed: $($_.Exception.Message)"
         }
         Start-Sleep -Seconds 1
         
-        # Phase 3: Process Updates
-        Write-LogMessage "INFO" "Phase 3: Processing updates..."
-        try {
-            if (Test-Path ".\job_manifest.json") {
-                $content = Get-Content ".\job_manifest.json" -Raw -ErrorAction Stop
-                $jobManifest = $content | ConvertFrom-Json -ErrorAction Stop
-                
-                if ($jobManifest -and $jobManifest.updates -and $jobManifest.updates.items) {
-                    $updates = @($jobManifest.updates.items | Where-Object { $_.status -eq "pending" -and $_.requires_yunona })
-                    $totalUpdates = $updates.Count
-                    Write-LogMessage "INFO" "Found $totalUpdates updates to process"
-                    
-                    if ($totalUpdates -gt 0) {
-                        for ($i = 0; $i -lt $totalUpdates; $i++) {
-                            $update = $updates[$i]
-                            Write-LogMessage "INFO" "Processing update $($i+1)/$($totalUpdates): $($update.name)"
-                            
-                            if ($update.yunona_path) {
-                                # Look for executable in the yunona_path directory
-                                $updateDir = $update.yunona_path
-                                $possibleExes = @(
-                                    (Join-Path $updateDir "$($update.name).exe"),
-                                    (Join-Path $updateDir "setup.exe"),
-                                    (Join-Path $updateDir "install.exe"),
-                                    (Join-Path $updateDir "update.exe")
-                                )
-                                
-                                $foundExe = $null
-                                foreach ($exePath in $possibleExes) {
-                                    if (Test-Path $exePath) {
-                                        $foundExe = $exePath
-                                        break
-                                    }
-                                }
-                                
-                                if ($foundExe) {
-                                    try {
-                                        Write-LogMessage "INFO" "Executing: $foundExe"
-                                        $process = Start-Process -FilePath $foundExe -ArgumentList "/quiet" -Wait -PassThru -WindowStyle Hidden
-                                        Write-LogMessage "INFO" "Update $($update.name) completed with exit code: $($process.ExitCode)"
-                                    } catch {
-                                        Write-LogMessage "WARN" "Update $($update.name) execution failed: $($_.Exception.Message)"
-                                    }
-                                } else {
-                                    Write-LogMessage "WARN" "No executable found in update directory: $updateDir"
-                                }
-                            } else {
-                                Write-LogMessage "WARN" "Update $($update.name) has no yunona_path"
-                            }
-                            
-                            Start-Sleep -Seconds 2
-                        }
-                    }
-                } else {
-                    Write-LogMessage "INFO" "No updates section found in job manifest"  
-                }
-            } else {
-                Write-LogMessage "WARN" "Job manifest not found: .\job_manifest.json"
-            }
-        } catch {
-            Write-LogMessage "ERROR" "Update processing failed: $($_.Exception.Message)"
-        }
+		# Phase 3: Process Updates
+		Write-LogMessage "INFO" "Phase 3: Processing updates..."
+		try {
+			if (Test-Path $JOB_MANIFEST_PATH) {
+				$content = Get-Content $JOB_MANIFEST_PATH -Raw -ErrorAction Stop
+				$jobManifest = $content | ConvertFrom-Json -ErrorAction Stop
+				
+				if ($jobManifest -and $jobManifest.updates -and $jobManifest.updates.items) {
+					$updates = @($jobManifest.updates.items | Where-Object { $_.status -eq "pending" -and $_.requires_yunona })
+					$totalUpdates = $updates.Count
+					Write-LogMessage "INFO" "Found $totalUpdates updates to process"
+					
+					if ($totalUpdates -gt 0) {
+						for ($i = 0; $i -lt $totalUpdates; $i++) {
+							$update = $updates[$i]
+							Write-LogMessage "INFO" "Processing update $($i+1)/$($totalUpdates): $($update.name)"
+							
+							if ($update.yunona_path) {
+								$silentCmdPath = Join-Path $update.yunona_path "_silent.cmd"
+								if (Test-Path $silentCmdPath) {
+									try {
+										Write-LogMessage "INFO" "Executing: $silentCmdPath"
+										$process = Start-Process -FilePath "cmd.exe" -ArgumentList "/c `"$silentCmdPath`"" -WorkingDirectory $update.yunona_path -Wait -PassThru -WindowStyle Hidden
+										Write-LogMessage "INFO" "Update $($update.name) completed with exit code: $($process.ExitCode)"
+									} catch {
+										Write-LogMessage "WARN" "Update $($update.name) execution failed: $($_.Exception.Message)"
+									}
+								} else {
+									Write-LogMessage "WARN" "Silent installer not found: $silentCmdPath"
+								}
+							} else {
+								Write-LogMessage "WARN" "Update $($update.name) has no yunona_path"
+							}
+							
+							Start-Sleep -Seconds 2
+						}
+					}
+				} else {
+					Write-LogMessage "INFO" "No updates section found in job manifest"  
+				}
+			} else {
+				Write-LogMessage "WARN" "Job manifest not found: $JOB_MANIFEST_PATH"
+			}
+		} catch {
+			Write-LogMessage "ERROR" "Update processing failed: $($_.Exception.Message)"
+		}
         Start-Sleep -Seconds 1
         
         # Phase 4: Process Scripts Folder
         Write-LogMessage "INFO" "Phase 4: Processing PowerShell scripts..."
         try {
-            if (Test-Path ".\scripts") {
-                $scriptFiles = @(Get-ChildItem -Path ".\scripts" -Filter "*.ps1" -File | Sort-Object Name)
+            if (Test-Path $SCRIPTS_FOLDER) {
+                $scriptFiles = @(Get-ChildItem -Path $SCRIPTS_FOLDER -Filter "*.ps1" -File | Sort-Object Name)
                 $totalScripts = $scriptFiles.Count
                 Write-LogMessage "INFO" "Found $totalScripts PowerShell scripts to execute"
                 
@@ -353,7 +350,7 @@ function Start-BackgroundProcessing {
                     Write-LogMessage "INFO" "No PowerShell scripts found in scripts folder"
                 }
             } else {
-                Write-LogMessage "INFO" "Scripts folder not found: .\scripts"
+                Write-LogMessage "INFO" "Scripts folder not found: $SCRIPTS_FOLDER"
             }
         } catch {
             Write-LogMessage "ERROR" "Scripts processing failed: $($_.Exception.Message)"
@@ -368,7 +365,8 @@ function Start-BackgroundProcessing {
         
         # Signal completion
         try {
-            "COMPLETED $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" | Out-File -FilePath ".\yunona_completion.flag" -Encoding ASCII
+            $completionFlagPath = Join-Path $SCRIPT_DIR "yunona_completion.flag"
+            "COMPLETED $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" | Out-File -FilePath $completionFlagPath -Encoding ASCII
             Write-LogMessage "INFO" "Completion flag file created successfully"
         } catch {
             Write-LogMessage "ERROR" "Failed to create completion flag: $($_.Exception.Message)"
@@ -378,6 +376,9 @@ function Start-BackgroundProcessing {
     # Add script block and parameters
     [void]$backgroundPS.AddScript($backgroundScript)
     [void]$backgroundPS.AddParameter("logFile", $script:logFile)
+    [void]$backgroundPS.AddParameter("SCRIPT_DIR", $SCRIPT_DIR)
+    [void]$backgroundPS.AddParameter("JOB_MANIFEST_PATH", $JOB_MANIFEST_PATH)
+    [void]$backgroundPS.AddParameter("SCRIPTS_FOLDER", $SCRIPTS_FOLDER)
     
     # Start asynchronous execution
     $asyncResult = $backgroundPS.BeginInvoke()
@@ -684,7 +685,7 @@ function Start-Yunona {
     Initialize-LogFile
     
     Write-LogMessage "INFO" "=== Starting Yunona System ==="
-    Write-LogMessage "INFO" "Final Fixed Version: UI First, Background Processing with Status Label"
+    Write-LogMessage "INFO" "Hidden Terminal Version: UI First, Background Processing with Status Label"
     
     # Get image files
     $script:images = Get-ImageFiles
