@@ -214,23 +214,6 @@ function Start-BackgroundProcessing {
         }
         
         Write-LogMessage "INFO" "Starting background processes..."
-        Start-Sleep -Seconds 1
-        
-        # Phase 0: Fix Problem Devices
-        Write-LogMessage "INFO" "Phase 0: Fixing devices with driver problems..."
-        try {
-            Get-PnpDevice | Where-Object {$_.ConfigManagerErrorCode -ne 0} | ForEach-Object { 
-                Start-Job -Name "Fix-$($_.FriendlyName)" -ScriptBlock { 
-                    param($InstanceId, $Name) 
-                    Disable-PnpDevice -InstanceId $InstanceId -Confirm:$false
-                    Enable-PnpDevice -InstanceId $InstanceId -Confirm:$false
-                } -ArgumentList $_.InstanceId, $_.FriendlyName 
-            }
-            Write-LogMessage "INFO" "Device fixing jobs started"
-        } catch {
-            Write-LogMessage "ERROR" "Device fixing failed: $($_.Exception.Message)"
-        }
-        Start-Sleep -Seconds 2
         
         # Phase 1: Initialization Script
         Write-LogMessage "INFO" "Phase 1: Running initialization script..."
@@ -245,7 +228,6 @@ function Start-BackgroundProcessing {
         } catch {
             Write-LogMessage "ERROR" "Initialization script failed: $($_.Exception.Message)"
         }
-        Start-Sleep -Seconds 1
         
         # Phase 2: Process Drivers
         Write-LogMessage "INFO" "Phase 2: Processing drivers..."
@@ -280,8 +262,6 @@ function Start-BackgroundProcessing {
                             } else {
                                 Write-LogMessage "WARN" "Driver $($driver.name) has no yunona_path"
                             }
-                            
-                            Start-Sleep -Seconds 2
                         }
                     }
                 } else {
@@ -293,7 +273,6 @@ function Start-BackgroundProcessing {
         } catch {
             Write-LogMessage "ERROR" "Driver processing failed: $($_.Exception.Message)"
         }
-        Start-Sleep -Seconds 1
         
 		# Phase 3: Process Updates
 		Write-LogMessage "INFO" "Phase 3: Processing updates..."
@@ -328,8 +307,6 @@ function Start-BackgroundProcessing {
 							} else {
 								Write-LogMessage "WARN" "Update $($update.name) has no yunona_path"
 							}
-							
-							Start-Sleep -Seconds 2
 						}
 					}
 				} else {
@@ -341,7 +318,6 @@ function Start-BackgroundProcessing {
 		} catch {
 			Write-LogMessage "ERROR" "Update processing failed: $($_.Exception.Message)"
 		}
-        Start-Sleep -Seconds 1
         
         # Phase 4: Process Scripts Folder
         Write-LogMessage "INFO" "Phase 4: Processing PowerShell scripts..."
@@ -361,9 +337,7 @@ function Start-BackgroundProcessing {
                             Write-LogMessage "INFO" "Script $($scriptFile.Name) completed with exit code: $($process.ExitCode)"
                         } catch {
                             Write-LogMessage "WARN" "Script $($scriptFile.Name) execution failed: $($_.Exception.Message)"
-                        }
-                        
-                        Start-Sleep -Seconds 1
+                        }                    
                     }
                 } else {
                     Write-LogMessage "INFO" "No PowerShell scripts found in scripts folder"
@@ -374,11 +348,9 @@ function Start-BackgroundProcessing {
         } catch {
             Write-LogMessage "ERROR" "Scripts processing failed: $($_.Exception.Message)"
         }
-        Start-Sleep -Seconds 1
         
         # Phase 5: Finalization
         Write-LogMessage "INFO" "Phase 5: Finalizing installation..."
-        Start-Sleep -Seconds 2
         
         Write-LogMessage "INFO" "=== Background Processing Completed ==="
         
