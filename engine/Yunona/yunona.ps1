@@ -35,7 +35,7 @@ if (-not $SCRIPT_DIR) {
 }
 
 # Configuration with absolute paths
-$SLIDE_INTERVAL = 5500 # 5.5 seconds
+$SLIDE_INTERVAL = 5200 # 5.2 seconds
 $IMAGES_FOLDER = Join-Path $SCRIPT_DIR "blob"
 $CONFIG_PATH = Join-Path $SCRIPT_DIR "config.json"
 $JOB_MANIFEST_PATH = Join-Path $SCRIPT_DIR "job_manifest.json"
@@ -45,7 +45,7 @@ $SCRIPTS_FOLDER = Join-Path $SCRIPT_DIR "scripts"  # New folder for PowerShell s
 # Animation settings
 $USE_ANIMATIONS = $true
 $ANIMATION_TYPE = "fade"
-$ANIMATION_DURATION = 500 # 0.5 seconds animation
+$ANIMATION_DURATION = 800 # 0.8 seconds animation
 
 # Window size configuration
 $IMAGE_WIDTH = 960
