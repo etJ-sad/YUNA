@@ -18,7 +18,7 @@ Write-Host "   Device: $Device" -ForegroundColor Gray
 
 try {
     # Host paths for keys
-    $HostKeysPath = "D:\_Assets\Keys\xX-39A\26100"
+    $HostKeysPath = "D:\_Assets\Keys\xX-32A\19044"
     $BootexSource = Join-Path $HostKeysPath "bootext.dat"
     $HashRegSource = Join-Path $HostKeysPath "hash.reg"
     
