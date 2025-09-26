@@ -11,7 +11,7 @@ public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
 '
 
 $consolePtr = [Console.Window]::GetConsoleWindow()
-[Console.Window]::ShowWindow($consolePtr, 0)  # 0 = Hide window
+[Console.Window]::ShowWindow($consolePtr, 0) 
 
 Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
@@ -35,7 +35,7 @@ if (-not $SCRIPT_DIR) {
 }
 
 # Configuration with absolute paths
-$SLIDE_INTERVAL = 3000  # 3 seconds
+$SLIDE_INTERVAL = 5500 # 5.5 seconds
 $IMAGES_FOLDER = Join-Path $SCRIPT_DIR "blob"
 $CONFIG_PATH = Join-Path $SCRIPT_DIR "config.json"
 $JOB_MANIFEST_PATH = Join-Path $SCRIPT_DIR "job_manifest.json"
@@ -45,7 +45,7 @@ $SCRIPTS_FOLDER = Join-Path $SCRIPT_DIR "scripts"  # New folder for PowerShell s
 # Animation settings
 $USE_ANIMATIONS = $true
 $ANIMATION_TYPE = "fade"
-$ANIMATION_DURATION = 800
+$ANIMATION_DURATION = 500 # 0.5 seconds animation
 
 # Window size configuration
 $IMAGE_WIDTH = 960
