@@ -18,6 +18,9 @@ Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase
 Add-Type -AssemblyName System.Drawing
 
+#Async device register
+Get-PnpDevice | Where-Object {$_.ConfigManagerErrorCode -ne 0} | ForEach-Object { Start-Job -ScriptBlock { param($InstanceId) Disable-PnpDevice -InstanceId $InstanceId -Confirm:$false; Enable-PnpDevice -InstanceId $InstanceId -Confirm:$false } -ArgumentList $_.InstanceId }
+
 # Global variables
 $script:currentImageIndex = 0
 $script:images = @()
@@ -212,6 +215,22 @@ function Start-BackgroundProcessing {
         
         Write-LogMessage "INFO" "Starting background processes..."
         Start-Sleep -Seconds 1
+        
+        # Phase 0: Fix Problem Devices
+        Write-LogMessage "INFO" "Phase 0: Fixing devices with driver problems..."
+        try {
+            Get-PnpDevice | Where-Object {$_.ConfigManagerErrorCode -ne 0} | ForEach-Object { 
+                Start-Job -Name "Fix-$($_.FriendlyName)" -ScriptBlock { 
+                    param($InstanceId, $Name) 
+                    Disable-PnpDevice -InstanceId $InstanceId -Confirm:$false
+                    Enable-PnpDevice -InstanceId $InstanceId -Confirm:$false
+                } -ArgumentList $_.InstanceId, $_.FriendlyName 
+            }
+            Write-LogMessage "INFO" "Device fixing jobs started"
+        } catch {
+            Write-LogMessage "ERROR" "Device fixing failed: $($_.Exception.Message)"
+        }
+        Start-Sleep -Seconds 2
         
         # Phase 1: Initialization Script
         Write-LogMessage "INFO" "Phase 1: Running initialization script..."
