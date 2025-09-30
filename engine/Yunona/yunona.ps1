@@ -1,7 +1,4 @@
-﻿# Yunona - Image Slideshow with Progress Tracking and Logging
-# PowerShell 5 compatible with WPF GUI - NO BACKGROUND TERMINAL VERSION
-
-# Hide PowerShell console window
+﻿# Hide PowerShell console window
 Add-Type -Name Window -Namespace Console -MemberDefinition '
 [DllImport("Kernel32.dll")]
 public static extern IntPtr GetConsoleWindow();
@@ -43,7 +40,7 @@ $IMAGES_FOLDER = Join-Path $SCRIPT_DIR "blob"
 $CONFIG_PATH = Join-Path $SCRIPT_DIR "config.json"
 $JOB_MANIFEST_PATH = Join-Path $SCRIPT_DIR "job_manifest.json"
 $INIT_SCRIPT = "C:\Users\Public\initializationComplete.ps1"
-$SCRIPTS_FOLDER = Join-Path $SCRIPT_DIR "scripts"  # New folder for PowerShell scripts
+$SCRIPTS_FOLDER = Join-Path $SCRIPT_DIR "scripts" 
 
 # Animation settings
 $USE_ANIMATIONS = $true

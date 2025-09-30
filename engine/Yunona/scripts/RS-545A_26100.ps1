@@ -23,6 +23,42 @@ function Find-AdapterPath {
 
 Write-Host "Searching for Intel network adapters..." -ForegroundColor Cyan
 
+# Find I225 (DEV_15F2)
+$i225Path = Find-AdapterPath "DEV_15F2"
+if ($i225Path) {
+    Write-Host "Found I225-LM at: $i225Path" -ForegroundColor Green
+    
+    Set-ItemProperty -Path $i225Path -Name "EnableWakeOnManagmentOnTCO" -Value "0" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*DeviceSleepOnDisconnect" -Value "0" -Type String
+    Set-ItemProperty -Path $i225Path -Name "BusType" -Value "5" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*FlowControl" -Value "3" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*TransmitBuffers" -Value "1024" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*ReceiveBuffers" -Value "1024" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*TCPChecksumOffloadIPv4" -Value "3" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*TCPChecksumOffloadIPv6" -Value "3" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*UDPChecksumOffloadIPv4" -Value "3" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*UDPChecksumOffloadIPv6" -Value "3" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*IPChecksumOffloadIPv4" -Value "3" -Type String
+    Set-ItemProperty -Path $i225Path -Name "LogLinkStateEvent" -Value "51" -Type String
+    Set-ItemProperty -Path $i225Path -Name "WaitAutoNegComplete" -Value "2" -Type String
+    Set-ItemProperty -Path $i225Path -Name "ITR" -Value "64" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*InterruptModeration" -Value "1" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*PriorityVLANTag" -Value "3" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*LsoV2IPv4" -Value "1" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*LsoV2IPv6" -Value "1" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*JumboPacket" -Value "1514" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*SpeedDuplex" -Value "0" -Type String
+    Set-ItemProperty -Path $i225Path -Name "MasterSlave" -Value "0" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*NumRssQueues" -Value "4" -Type String
+    Set-ItemProperty -Path $i225Path -Name "IdleTimeoutMs" -Value "5000" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*WakeOnPattern" -Value "0" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*WakeOnMagicPacket" -Value "0" -Type String
+    Set-ItemProperty -Path $i225Path -Name "WakeOnMagicPacketFromS5" -Value "0" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*PMARPOffload" -Value "1" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*PMNSOffload" -Value "1" -Type String
+    Set-ItemProperty -Path $i225Path -Name "*IdleRestriction" -Value "0" -Type String
+} 
+
 # Find I210 (DEV_1533)
 $i210Path = Find-AdapterPath "DEV_1533"
 if ($i210Path) {
