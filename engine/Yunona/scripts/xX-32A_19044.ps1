@@ -80,7 +80,7 @@ if ($i210Path) {
     
 }
 
-$i219Path = Find-AdapterPath "DEV_1A1C"
+$i219Path = Find-AdapterPath "DEV_15F9"
 if ($i219Path) {
     Write-Host "Found I219 at: $i219Path" -ForegroundColor Green
     
