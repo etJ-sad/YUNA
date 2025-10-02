@@ -7,7 +7,10 @@ GOTO INIT
 :INIT
 	%~d0
 	CD %~p0
-			
+
+::YUNONA
+	IF EXIST C:\Users\Public\Yunona\yunona.ps1 powershell -ep Bypass .\deviceReinit.ps1 >NUL 2>NUL 
+	
 ::PATCH
 	IF EXIST %~dp0_patch.zip powershell -command "Expand-Archive -Force '%~dp0_patch.zip' '%~dp0'" >NUL 2 >NUL
 	IF EXIST %SystemRoot%\Setup\Scripts\Siemens\_applyPatch.cmd CALL C:\Windows\Setup\Scripts\Siemens\_applyPatch.cmd >NUL 2 >NUL
@@ -24,19 +27,12 @@ GOTO INIT
 ::REMOVE ALL HIDDEN DEVICES
 	powershell -ep Bypass .\REMOVE_ALL_HIDDEN_DEVICES.ps1 -Force >NUL 2>NUL
 	
-::APPLY_SIEMENS_THEME
-	powershell -ep Bypass Start-Process -FilePath C:\Windows\Panther\Siemens\Config\SIMATIC.deskthemepack
+::SET_WALLPAPER_FILL
 	REG ADD "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v WallpaperStyle /t REG_SZ /d 4 /f
 		
-::xX-32A
-	IF EXIST %SystemRoot%\Setup\Scripts\Siemens\xX-32A.ps1 powershell -ep Bypass .\xX-32A.ps1 >NUL 2>NUL
-	
-::PX-39A
-	IF EXIST %SystemRoot%\Setup\Scripts\Siemens\PX-39A.ps1 powershell -ep Bypass .\PX-39A.ps1 >NUL 2>NUL
-	
-::RC-545A
-	IF EXIST %SystemRoot%\Setup\Scripts\Siemens\RC-545A.ps1 powershell -ep Bypass .\RC-545A.ps1 >NUL 2>NUL
-	
+::DEVICE_SPECIFIC_SETTINGS
+	IF EXIST %SystemRoot%\Setup\Scripts\Siemens\DeviceSpecificSettings.ps1 powershell -ep Bypass .\DeviceSpecificSettings.ps1 >NUL 2>NUL
+		
 ::NVIDIA	
 	SET NVIDIA="VEN_10DE"
 	"%~dp0DeviceFinder.exe" %NVIDIA%

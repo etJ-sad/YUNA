@@ -81,7 +81,7 @@ if (Test-Path $vcredist86) {
 
 # Run Config PowerShell scripts if they exist
 $ConfigPath = "C:\Windows\Panther\Siemens\Config"
-$Scripts = @("SET_WALLPAPER_TO_FILL.ps1", "SET_WINDOWS_NOTEPAD_TO_DEFAULT.ps1", "SET_WINDOWS_EXPLORER_TO_DEFAULT.ps1", "PX-39A.ps1", "RESET_LOCKSCREEN_SETTINGS.ps1", "SET_PORTS_CLOSED.ps1")
+$Scripts = @("SET_WALLPAPER_TO_FILL.ps1", "SET_WINDOWS_NOTEPAD_TO_DEFAULT.ps1", "SET_WINDOWS_EXPLORER_TO_DEFAULT.ps1", "SET_VIRTUAL_KEYBOARD_ICON.ps1", "RESET_LOCKSCREEN_SETTINGS.ps1", "SET_PORTS_CLOSED.ps1")
 foreach ($script in $Scripts) {
     $scriptPath = "$ConfigPath\$script"
     if (Test-Path $scriptPath) {
@@ -150,6 +150,15 @@ foreach ($file in $filesToDelete) {
         Write-Log "[INFO] Deleted file: $file"
     }
 }
+
+#$logs = wevtutil el
+#foreach ($log in $logs) {
+#    Write-Log "[INFO] Clearing event log: $log"
+#    try {
+#        wevtutil cl "$log"
+#        Write-Log "[SUCCESS] Cleared: $log"
+#    } catch {}
+#}
 
 Write-Log "[INFO] Script '$scriptName' execution completed."
 powershell -ep Bypass -Command "Get-Process | Where-Object { $_.MainWindowTitle -match '"Themes"' -or $_.ProcessName -eq '"SystemSettings"' } | Stop-Process -Force"

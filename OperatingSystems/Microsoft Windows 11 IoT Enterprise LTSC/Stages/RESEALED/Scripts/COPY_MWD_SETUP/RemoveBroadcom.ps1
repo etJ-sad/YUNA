@@ -12,13 +12,16 @@ function Hide-ConsoleWindow {
 
 Hide-ConsoleWindow
 
-Stop-Service -Name "LSAService" -Force
+# LSA-Dienst stoppen
+Stop-Service -Name "LSAService" -Force -ErrorAction SilentlyContinue
 
-$appName = (Get-Package | Where-Object { $_.Name -like "*LSI Storage Authority*" }).Name
-if ($appName) {
-    Uninstall-Package -Name $appName -Force
+# LSI Storage Authority deinstallieren (offline über WMI)
+$lsiApp = Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -like "*LSI Storage Authority*" }
+if ($lsiApp) {
+    $lsiApp.Uninstall()
 }
 
-Remove-Item -Path "C:\Users\Public\Desktop\Launch LSA.lnk" -Recurse 
-Remove-Item -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\LSI" -Recurse 
-Remove-Item -Path "C:\Program Files\LSI" -Recurse 
+# Verknüpfungen und Ordner löschen
+Remove-Item -Path "C:\Users\Public\Desktop\Launch LSA.lnk" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\LSI" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "C:\Program Files\LSI" -Recurse -Force -ErrorAction SilentlyContinue
