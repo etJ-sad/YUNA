@@ -15,7 +15,7 @@ $SCRIPT_DIR = if ($PSScriptRoot) {
     Get-Location
 }
 
-$iconPath = Join-Path -Path $SCRIPT_DIR -ChildPath "icon.ico"
+$iconPath = Join-Path -Path $SCRIPT_DIR -ChildPath "blob\icon.ico"
 
 $consolePtr = [Console.Window]::GetConsoleWindow()
 [Console.Window]::ShowWindow($consolePtr, 0) 
