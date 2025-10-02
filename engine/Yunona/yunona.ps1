@@ -7,6 +7,16 @@ public static extern IntPtr GetConsoleWindow();
 public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
 '
 
+$SCRIPT_DIR = if ($PSScriptRoot) {
+    $PSScriptRoot
+} elseif ($MyInvocation.MyCommand.Path) {
+    Split-Path -Parent $MyInvocation.MyCommand.Path
+} else {
+    Get-Location
+}
+
+$iconPath = Join-Path -Path $SCRIPT_DIR -ChildPath "icon.ico"
+
 $consolePtr = [Console.Window]::GetConsoleWindow()
 [Console.Window]::ShowWindow($consolePtr, 0) 
 
@@ -14,9 +24,6 @@ Add-Type -AssemblyName PresentationFramework
 Add-Type -AssemblyName PresentationCore
 Add-Type -AssemblyName WindowsBase
 Add-Type -AssemblyName System.Drawing
-
-#Async device register
-Get-PnpDevice | Where-Object {$_.ConfigManagerErrorCode -ne 0} | ForEach-Object { Start-Job -ScriptBlock { param($InstanceId) Disable-PnpDevice -InstanceId $InstanceId -Confirm:$false; Enable-PnpDevice -InstanceId $InstanceId -Confirm:$false } -ArgumentList $_.InstanceId }
 
 # Global variables
 $script:currentImageIndex = 0
@@ -27,12 +34,6 @@ $script:allowClose = $false
 $script:logFile = ""
 $script:pendingBitmap = $null
 $script:allTasksCompleted = $false
-
-# Get the script's directory dynamically
-$SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
-if (-not $SCRIPT_DIR) {
-    $SCRIPT_DIR = Get-Location
-}
 
 # Configuration with absolute paths
 $SLIDE_INTERVAL = 5200 # 5.2 seconds
@@ -574,7 +575,7 @@ function Create-MainWindow {
     [xml]$xaml = @"
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Yunona - System Preparation" 
+        Title="Setup" 
         Width="$WINDOW_WIDTH" 
         Height="$WINDOW_HEIGHT"
         WindowStartupLocation="CenterScreen"
@@ -635,6 +636,23 @@ function Create-MainWindow {
     try {
         $reader = New-Object System.Xml.XmlNodeReader $xaml
         $script:window = [Windows.Markup.XamlReader]::Load($reader)
+		
+		# Add Icon
+		if (Test-Path $iconPath) {
+            try {
+                $icon = New-Object System.Windows.Media.Imaging.BitmapImage
+                $icon.BeginInit()
+                $icon.UriSource = New-Object System.Uri($iconPath, [System.UriKind]::Absolute)
+                $icon.EndInit()
+                $icon.Freeze()
+                $script:window.Icon = $icon
+                Write-LogMessage "INFO" "Window icon set successfully"
+            } catch {
+                Write-LogMessage "WARN" "Failed to set window icon: $($_.Exception.Message)"
+            }
+        } else {
+            Write-LogMessage "WARN" "Icon file not found: $iconPath"
+        }
         
         # Add hotkey to close
         $script:window.Add_KeyDown({
